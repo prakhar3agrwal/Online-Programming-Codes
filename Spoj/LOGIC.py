@@ -1,0 +1,13 @@
+n=int(raw_input())
+k=n
+f=1
+while(k>0):
+	f=f*k
+	k=k-1
+k=n
+p=1
+while(k>0):
+	p=p*2
+	k=k-1
+f=f+p-n
+print(f)

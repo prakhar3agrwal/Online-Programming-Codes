@@ -1,0 +1,34 @@
+#include<stdio.h>
+main()
+{
+unsigned long long int n,m,i,j,s,t,x,mx;
+scanf("%llu",&t);
+while(t--)
+{
+          scanf("%llu%llu",&n,&m);
+          unsigned long long int a[n][m],b[n][m],c[n][m];
+          for(i=0;i<n;i++)
+          for(j=0;j<m;j++)
+          scanf("%llu",&a[i][j]);
+          for(i=0;i<n;i++)
+          for(j=0;j<m;j++)
+          scanf("%llu",&b[i][j]);
+          for(i=0;i<n;i++)
+          for(j=0;j<m;j++)
+          scanf("%llu",&c[i][j]);
+          s=0;
+          for(i=0;i<n;i++)
+          {
+                          mx=0;
+                          for(j=0;j<m;j++)
+                          {
+                                          x=a[i][j]>b[i][j]?b[i][j]:a[i][j];
+                                          x=(x*c[i][j]);
+                                          if(x>mx) 
+                                          mx=x;
+                          }
+                          s+=mx; 
+          }
+          printf("%llu\n",s);
+}
+}

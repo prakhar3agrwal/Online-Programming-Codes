@@ -1,0 +1,116 @@
+#include<string.h>
+#include <stdio.h>
+#define MAXN 1000005
+char x[MAXN+2], d[MAXN+2];
+int main()
+{
+long long int i,j,l,f,l2,n,r,a;
+scanf("%lld",&n);
+while(n--)
+{
+          scanf("%s",&x);
+          l=strlen(x);
+          //l=strlen(x);
+          f=0;
+          if(l%2!=0)
+          {
+                     for(i=(l/2)-1,j=(l/2)+1;i>=0;i--,j++)
+                     {
+                                                      if(x[i]!=x[j])
+                                                      {
+                                                          if((x[i]-48)>(x[j]-48))
+                                                             f=1;
+                                                             break;
+                                                      }
+                     }
+                     if(f==1)
+                     {
+                             for(i=0;i<=l/2;i++)
+                             printf("%c",x[i]);
+                             for(i=(l/2)-1;i>=0;i--)
+                             printf("%c",x[i]);
+                     }
+                     else if(f==0)
+                     {
+                          j=0;r=1;
+                          for(i=(l/2);i>=0;i--)
+                          {
+                                    a=x[i]-48;
+                                    a+=r;
+                                    d[j]=(a%10)+48;
+                                    r=a/10;
+                                    j++;
+                          }if(r!=0)
+                          {d[j]=r+48;j++;}
+                          d[j]='\0';
+                          l2=j;
+                          if(l2>(l/2)+1)
+                          {
+                                        for(i=l2-1;i>0;i--)
+                                        printf("%c",d[i]);
+                                        for(i=1;i<l2;i++)
+                                        printf("%c",d[i]);
+                          }
+                          else
+                          {
+                                        for(i=l2-1;i>=0;i--)
+                                        printf("%c",d[i]);
+                                        for(i=1;i<l2;i++)
+                                        printf("%c",d[i]);
+                          }
+                     }
+          }
+          else
+          {
+                     for(i=(l/2)-1,j=(l/2);i>=0;i--,j++)
+                     {
+                                                      if(x[i]!=x[j])
+                                                      {
+                                                          if((x[i]-48)>(x[j]-48))
+                                                             f=1;
+                                                             break;
+                                                      }
+                     }
+                     if(f==1)
+                     {
+                             for(i=0;i<l/2;i++)
+                             printf("%c",x[i]);
+                             for(i=(l/2)-1;i>=0;i--)
+                             printf("%c",x[i]);
+                     }
+                     else if(f==0)
+                     {
+                          j=0;r=1;
+                          for(i=(l/2)-1;i>=0;i--)
+                          {
+                                    a=x[i]-48;
+                                    a+=r;
+                                    d[j]=(a%10)+48;
+                                    r=a/10;
+                                    j++;
+                          }
+                          if(r!=0)
+                          {d[j]=r+48;j++;}
+                          d[j]='\0';
+                          l2=j;
+                          if(l2>(l/2))
+                          {
+                                        for(i=l2-1;i>=0;i--)
+                                        printf("%c",d[i]);
+                                        for(i=1;i<l2;i++)
+                                        printf("%c",d[i]);
+                          }
+                          else
+                          {
+                                        for(i=l2-1;i>=0;i--)
+                                        printf("%c",d[i]);
+                                        for(i=0;i<l2;i++)
+                                        printf("%c",d[i]);
+                          }
+                     }
+          }printf("\n");
+}
+}
+                                                 
+
+

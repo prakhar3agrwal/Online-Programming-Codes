@@ -1,0 +1,90 @@
+#include<iostream>
+#include<vector>
+#include<algorithm>
+using namespace std;
+int main()
+{
+int x,y,i,f;
+double w,m;
+while(1)
+{
+        scanf("%d%d",&x,&y);
+        cin>>w;
+        if(x==0)
+        break;
+        f=0;
+        vector <double> a;
+        for(i=0;i<x;i++)
+        {
+                  cin>>m;
+                  a.push_back(m);
+        }
+        sort(a.begin(),a.end());
+        vector <double> b;
+        for(i=0;i<y;i++)
+        {
+                  cin>>m;
+                  b.push_back(m);
+        }
+        sort(b.begin(),b.end());
+        for(i=0;i<x;i++)
+        {
+                        if(i==0)
+                        {
+                                if(a[0]-w/2>0)
+                                {
+                                              f=1;
+                                              break;
+                                }
+                        }
+                        else if(i==x-1)
+                        {
+                             if(a[x-1]+w/2<75)
+                             {
+                                              f=1;
+                                              break;
+                             }
+                        }
+                        else
+                        {
+                            if(a[i]+w<a[i+1])
+                            {
+                                              f=1;
+                                              break;
+                            }
+                        }
+        }
+        if(f==0)
+        for(i=0;i<y;i++)
+        {
+                        if(i==0)
+                        {
+                                if(b[0]-w/2>0)
+                                {
+                                              f=1;
+                                              break;
+                                }
+                        }
+                        else if(i==y-1)
+                        {
+                             if(b[y-1]+w/2<100)
+                             {
+                                              f=1;
+                                              break;
+                             }
+                        }
+                        else
+                        {
+                            if(b[i]+w<b[i+1])
+                            {
+                                              f=1;
+                                              break;
+                            }
+                        }
+        }
+        if(f==0)
+        printf("YES\n");
+        else
+        printf("NO\n");
+}
+}        

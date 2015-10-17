@@ -1,0 +1,94 @@
+#include<stdio.h>
+#include<string.h>
+main()
+{
+char a[20][20];
+int b[10][10]={0},c[10][10]={0},i,j,k,f=1,num=0,t=0;
+for(i=0;i<10;i++)
+scanf("%s",&a[i]);
+for(i=0;i<10;i++)
+{
+                 for(j=0;j<10;j++)
+                 {
+                                  if(a[i][j]=='T')
+                                  {
+                                                  num++;
+                                                  b[i][j]=1;
+                                                  c[i][j]=1;
+                                  }
+                                  else if(a[i][j]=='F')
+                                  {
+                                       b[i][j]=-1;
+                                       c[i][j]=-1;
+                                  }
+                 }
+}
+while(f!=0 && num>0)
+{
+           f=0;t++;
+           for(i=0;i<10;i++)
+           {
+                            for(j=0;j<10;j++)
+                            {
+                                             if(b[i][j]==-1)
+                                             {
+                                                            c[i][j]=0;
+                                                            if(i+1<10)
+                                                            {
+                                                                 if(b[i+1][j]==1)
+                                                                 {
+                                                                                 c[i+1][j]=-1;
+                                                                                 b[i+1][j]=0;
+                                                                                 num--;
+                                                                                 f=1;
+                                                                 }
+                                                            }
+                                                            if(i-1>=0)
+                                                            {
+                                                                      if(b[i-1][j]==1)
+                                                                      {
+                                                                                      c[i-1][j]=-1;
+                                                                                      b[i-1][j]=0;
+                                                                                      num--;
+                                                                                      f=1;
+                                                                      }
+                                                            }
+                                                            if(j+1<10)
+                                                            {
+                                                                      if(b[i][j+1]==1)
+                                                                      {
+                                                                                      c[i][j+1]=-1;
+                                                                                      b[i][j+1]=0;
+                                                                                      num--;
+                                                                                      f=1;
+                                                                      }
+                                                            }
+                                                            if(j-1>=0)
+                                                            {
+                                                                      if(b[i][j-1]==1)
+                                                                      {
+                                                                                      c[i][j-1]=-1;
+                                                                                      b[i][j-1]=0;
+                                                                                      num--;
+                                                                                      f=1;
+                                                                      }
+                                                            }
+                                             }   
+                            }
+           }
+           for(i=0;i<10;i++)
+           
+                            for(j=0;j<10;j++)
+                            b[i][j]=c[i][j];
+
+}num=0;
+for(i=0;i<10;i++)
+for(j=0;j<10;j++)
+if(b[i][j]>0)
+num+=b[i][j];
+if(num==0)
+printf("%d\n",t);
+else
+printf("-1\n");
+return 0;
+}

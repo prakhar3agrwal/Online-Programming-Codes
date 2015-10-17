@@ -1,0 +1,19 @@
+#include<stdio.h>
+main()
+{
+unsigned long long int t,n,x,s,r;
+scanf("%llu",&t);
+while(t--)
+{
+          scanf("%llu",&n);
+          s=0;
+          x=n/3;
+          s=((x*(1+x))*3)/2;
+          r=n%3;
+          if(r==0)
+          s-=x;
+          else
+          s+=(r-1)*(x+1);
+          printf("%llu\n",s);
+}
+}
