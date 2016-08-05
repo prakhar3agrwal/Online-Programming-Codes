@@ -1,13 +1,17 @@
 class Solution {
 public:
-    int singleNumber(int A[], int n) {
-        sort(A,A+n);
-        int i,j,k;
-        for(i=0;i+2<n;)
-        if(A[i]!=A[i+2])
-        return A[i];
-        else
-        i+=3;
-        return A[i];
+    int singleNumber(vector<int>& nums) {
+        long long int ans = 0, two = 1,temp = 0, n;
+        n = nums.size();
+        for(int i = 1;i <= 32; i++){
+            temp = 0;
+            for(int j = 0 ; j<n; j++)
+            temp += ((nums[j] & two)>0);
+            ans += (two * (temp%3));
+            two <<= 1;
+        }
+        
+        return (int)ans;
+        
     }
 };
