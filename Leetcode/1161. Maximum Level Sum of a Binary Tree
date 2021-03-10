@@ -1,0 +1,50 @@
+https://leetcode.com/problems/maximum-level-sum-of-a-binary-tree
+
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    TreeNode dummy = new TreeNode(1000000);
+    public int maxLevelSum(TreeNode root) {
+        int maxSumLevel = 1;
+        int maxSum = root.val;
+        
+        Queue<TreeNode> queue = new LinkedList<>();
+        int currLevel = 1;
+        queue.add(root);
+        while(!queue.isEmpty()){
+            queue.add(dummy);
+            TreeNode currNode  = queue.poll();
+            int currSum = 0;
+            while(currNode!=dummy){
+                currSum += currNode.val;
+                if(currNode.left!=null){
+                    queue.add(currNode.left);
+                }
+                if(currNode.right!=null){
+                    queue.add(currNode.right);
+                }
+                currNode = queue.poll();
+            }
+            if(currSum > maxSum){
+                maxSum = currSum;
+                maxSumLevel = currLevel;
+            }
+            currLevel++;
+        }
+        return maxSumLevel;
+    }
+}
