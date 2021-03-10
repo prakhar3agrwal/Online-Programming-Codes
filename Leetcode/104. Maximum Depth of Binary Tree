@@ -17,32 +17,19 @@ https://leetcode.com/problems/maximum-depth-of-binary-tree
  * }
  */
 class Solution {
-    private boolean isLeaf(TreeNode root){
-       if(null == root){
-           return false;
-       }
-       return ((root.left==null) && (root.right==null));
-    }
     
-    int ans = Integer.MIN_VALUE;
-    private void helper(TreeNode root, int currSum){
+    private int helper(TreeNode root, int currSum){
         if(null == root){
-            return;
-        }
-        if(isLeaf(root)){
-            ans = Math.max(ans, currSum + 1);
-            return;
+            return 0;
         }
 
-        helper(root.left, currSum+1);
-        helper(root.right, currSum+1);
+        return Math.max(helper(root.left, currSum+1), helper(root.right, currSum+1))+1;
         
     }
     public int maxDepth(TreeNode root) {
         if(null == root){
             return 0;
         }
-        helper(root, 0);
-        return ans;
+        return helper(root, 0);
     }
 }
