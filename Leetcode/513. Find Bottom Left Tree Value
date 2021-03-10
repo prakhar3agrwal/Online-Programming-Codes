@@ -1,0 +1,36 @@
+https://leetcode.com/problems/find-bottom-left-tree-value
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    int currMaxRow = -1;
+    int currLeftMostValueOfMaxRow = -1;
+    private void helper(TreeNode root, int currRow){
+        if(root == null){
+            return;
+        }
+        if(currRow > currMaxRow){
+            currMaxRow = currRow;
+            currLeftMostValueOfMaxRow = root.val;
+        }
+        helper(root.left, currRow+1);
+        helper(root.right, currRow+1);
+    }
+    public int findBottomLeftValue(TreeNode root) {
+        helper(root,0);
+        return currLeftMostValueOfMaxRow;
+    }
+}
