@@ -1,0 +1,28 @@
+https://leetcode.com/problems/find-the-celebrity
+
+
+/* The knows API is defined in the parent class Relation.
+      boolean knows(int a, int b); */
+
+public class Solution extends Relation {
+    public int findCelebrity(int n) {
+        Stack<Integer> s = new Stack<>();
+        s.push(0);
+        for(int i=1;i<n;i++){
+            int currTop = s.peek();
+            if(knows(currTop, i)){
+               s.pop();
+                s.push(i);
+            }
+        }
+        int candidate = s.peek();
+        for(int i=0;i<n;i++){
+            if(candidate!=i){
+                if(!(knows(i,candidate) && !knows(candidate,i))){
+                    return -1;
+                }
+            }
+        }
+        return candidate;
+    }
+}
