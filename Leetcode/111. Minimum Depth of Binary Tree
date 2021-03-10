@@ -1,0 +1,49 @@
+https://leetcode.com/problems/minimum-depth-of-binary-tree
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    private boolean isLeaf(TreeNode root){
+        if(null == root){
+            return false;
+        }
+        return ((root.left==null) && (root.right==null));
+    }
+    int ans = Integer.MAX_VALUE;
+    private void helper(TreeNode root, int currSum){
+        if(null == root){
+            return;
+        }
+        if(isLeaf(root)){
+            ans = Math.min(ans, currSum + 1);
+            return;
+        }
+        //optmization to prine the tree
+        if(ans < currSum){
+            return;
+        }
+        helper(root.left, currSum+1);
+        helper(root.right, currSum+1);
+        
+    }
+    public int minDepth(TreeNode root) {
+        if(null == root){
+            return 0;
+        }
+        helper(root, 0);
+        return ans;
+    }
+}
