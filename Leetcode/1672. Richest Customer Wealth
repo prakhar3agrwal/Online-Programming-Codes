@@ -1,0 +1,13 @@
+https://leetcode.com/problems/richest-customer-wealth
+
+class Solution {
+    public int maximumWealth(int[][] accounts) {
+        int m = accounts.length;
+        int ans = 0;
+        for(int i=0;i<m;i++){
+            int currSum = Arrays.stream(accounts[i]).sum();
+            ans = Math.max(ans, currSum);
+        }
+        return ans;
+    }
+}
