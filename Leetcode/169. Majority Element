@@ -1,0 +1,22 @@
+https://leetcode.com/problems/majority-element
+
+class Solution {
+    public int majorityElement(int[] nums) {
+        int n = nums.length;
+        int currCandidate = nums[0];
+        int currCandidateCt = 1;
+        for(int i=1;i<n;i++){
+            if(nums[i] == currCandidate){
+                currCandidateCt++;
+            }
+            else{
+                currCandidateCt--;
+                if(currCandidateCt<0){
+                    currCandidateCt = 1;
+                    currCandidate = nums[i];
+                }
+            }
+        }
+        return currCandidate;
+    }
+}
