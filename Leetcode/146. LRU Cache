@@ -1,0 +1,89 @@
+https://leetcode.com/problems/lru-cache
+
+class LRUCache {
+
+    class Node{
+        int key;
+        int value;
+        Node next;
+        Node prev;
+        
+        public Node(int value){
+            this.value = -1;
+            this.next = null;
+            this.prev = null;
+        }
+    }
+    int size = 0;
+    int capacity = 0;
+    Node head = null;
+    Node tail = null;
+    Map<Integer, Node> mp = null;
+    public LRUCache(int capacity) {
+        head = new Node(0);
+        tail = new Node(0);
+        head.next = tail;
+        tail.prev = head;
+        head.prev = tail.next = null;
+        
+        mp = new HashMap<>();
+        this.capacity = capacity;
+    }
+
+    private void moveLRUNodeToHead(Node node){
+        node.prev.next = node.next;
+        node.next.prev = node.prev;
+        
+        node.prev = head;
+        node.next = head.next;
+        head.next.prev = node;
+        head.next = node;
+    }
+    
+    private void addNode(Node node){
+        node.prev = head;
+        node.next = head.next;
+        head.next.prev = node;
+        head.next = node;
+    }
+    
+    private void deleteNode(){
+        tail.prev.prev.next = tail;
+        tail.prev = tail.prev.prev;
+    }
+    
+    public int get(int key) {
+        Node currNode = mp.getOrDefault(key, new Node(-1));
+        if(currNode.value !=-1){
+            moveLRUNodeToHead(currNode);
+        }
+        return currNode.value;
+    }
+    
+    public void put(int key, int value) {
+        Node currNode = mp.getOrDefault(key, new Node(-1));
+        if(currNode.value != -1){
+            moveLRUNodeToHead(currNode);
+            currNode.value = value;
+            return;
+        }
+        currNode.key = key;
+        currNode.value = value;
+        addNode(currNode);
+        mp.put(key,currNode);
+        if(size<capacity){
+            size++;
+        }else{
+            Node toDelete = tail.prev;
+            mp.remove(toDelete.key);
+            deleteNode();
+        }
+    }
+}
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache obj = new LRUCache(capacity);
+ * int param_1 = obj.get(key);
+ * obj.put(key,value);
+ */
