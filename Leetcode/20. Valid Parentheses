@@ -1,0 +1,31 @@
+https://leetcode.com/problems/valid-parentheses
+
+class Solution {
+    
+    public boolean isValid(String s) {
+        int l = s.length();
+        if(l%2 !=0){
+            return false;
+        }
+        Map<Character, Character> pairs  = new HashMap<>();
+        pairs.put(')', '(');
+        pairs.put(']', '[');
+        pairs.put('}', '{');
+        Stack<Character> st = new Stack<>();
+        st.push(s.charAt(0));
+        for(int i=1;i<l;i++){
+            char currChar = s.charAt(i);
+            if(pairs.containsKey(currChar)){
+                char currTop = st.isEmpty() ? '!' : st.pop();
+                if(currTop != pairs.get(currChar)){
+                    return false;
+                }
+            }
+            else{
+                st.push(currChar);      
+            }
+            
+        }
+        return st.isEmpty();
+    }
+}
