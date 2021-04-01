@@ -1,0 +1,19 @@
+https://leetcode.com/problems/unique-paths
+
+
+import java.math.BigInteger;
+class Solution {
+    
+    private BigInteger fact(int n){
+        BigInteger f = new BigInteger("1");
+        for(int i=n;i>1;i--){
+            f = f.multiply(BigInteger.valueOf(i));
+        }
+        return f;
+    }
+    public int uniquePaths(int m, int n) {
+        BigInteger ans = new BigInteger("1");
+        ans = fact(m+n-2).divide((fact(n-1).multiply(fact(m-1))));
+        return ans.intValue();
+    }
+}
