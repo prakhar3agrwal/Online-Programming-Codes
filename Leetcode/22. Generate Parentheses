@@ -1,0 +1,29 @@
+https://leetcode.com/problems/generate-parentheses
+
+class Solution {
+    List<String> ans = new ArrayList<>();
+    
+    private void helper(int n, String currString, int open, int closed){
+       if(currString.length() == 2*n){
+            ans.add(currString);
+            return;
+        }
+        
+        if(open<n && open >= closed){
+            String openString  = currString + "(";
+            helper(n, openString, open+1, closed);
+        }
+
+        
+        if(open>closed && open <=n){
+            String closedString = currString + ")";
+            helper(n, closedString, open, closed+1);
+        }
+
+        }
+    
+    public List<String> generateParenthesis(int n) {
+        helper(n, "", 0,0);
+        return ans;
+    }
+}
