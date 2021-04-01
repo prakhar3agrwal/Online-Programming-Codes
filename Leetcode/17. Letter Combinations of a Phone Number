@@ -1,0 +1,35 @@
+https://leetcode.com/problems/letter-combinations-of-a-phone-number
+
+
+class Solution {
+    List<String> ans = new ArrayList<>();
+    private Map<Character, String> mp = Map.of('2', "abc",
+                                              '3', "def",
+                                              '4', "ghi",
+                                              '5', "jkl",
+                                              '6', "mno",
+                                              '7', "pqrs",
+                                              '8', "tuv",
+                                              '9', "wxyz");
+    
+    private void helper(String digits, int currInd, int len, String currString){
+        if(currInd == len){
+            ans.add(currString);
+            return;
+        }
+        String comb = mp.getOrDefault(digits.charAt(currInd), "");
+        for(int j=0;j<comb.length();j++){
+            String curr = currString + comb.charAt(j);
+            helper(digits, currInd+1, len, curr);
+        }
+    }
+    public List<String> letterCombinations(String digits) {
+        
+        int len = digits.length();
+        if(0==len){
+            return ans;
+        }
+        helper(digits, 0, len, "");
+        return ans;
+    }
+}
