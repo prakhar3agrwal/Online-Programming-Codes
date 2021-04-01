@@ -1,0 +1,79 @@
+https://leetcode.com/problems/string-compression/
+
+class Solution {
+    int digitCt(int n){
+        if(n <10){
+            return 1;
+        }
+        if(n<100){
+            return 2;
+        }
+        if(n < 1000){
+            return 3;
+        }
+        return 4;
+    }
+    private int rev(int n){
+        int ans = 0;
+        while(n>0){
+            ans = ans*10+n%10;
+            n/=10;
+        }
+        return ans;
+    }
+    public int compress(char[] chars) {
+        int len= chars.length;
+        char currChar = chars[0];
+        int ans = 0;
+        int currFreq = 1;
+        int currInd = 0;
+        for(int i = 1;i<len;i++){
+            if(chars[i] == currChar){
+                currFreq++;
+            }else{
+                ans++;
+                chars[currInd++] = currChar;
+                if(currFreq>1){
+                    int diff = digitCt(currFreq);
+                    ans += digitCt(currFreq);
+                    currFreq = rev(currFreq);
+                    diff -= digitCt(currFreq);
+                    while(currFreq>0){
+                    chars[currInd++] = (char)(currFreq%10 + '0') ;
+                    currFreq /=10;
+                    }  
+                    while(diff>0){
+                        diff--;
+                        chars[currInd++] = '0';
+                    }
+                }
+
+                currFreq = 1;
+                currChar = chars[i];
+            }
+        }
+        
+        chars[currInd++] = currChar;
+        if(currFreq>1){
+            int diff = digitCt(currFreq);
+            ans += digitCt(currFreq)+1;
+            currFreq = rev(currFreq);
+            diff -= digitCt(currFreq);
+             System.out.println(currFreq);
+            while(currFreq>0){
+            chars[currInd++] =  (char)(currFreq%10 + '0') ;
+            currFreq /=10;
+            }
+            while(diff>0){
+               diff--;
+               chars[currInd++] = '0';
+            }
+        }else{
+            
+            ans++;
+        }
+        if(currInd>len)
+        chars[currInd] = '\0';
+        return ans;
+    }
+}
