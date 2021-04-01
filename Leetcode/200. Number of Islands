@@ -1,0 +1,41 @@
+https://leetcode.com/problems/number-of-islands
+
+
+class Solution {
+    
+    int[] diff = new int[]{-1,1};
+    private void helper(char[][]grid, int currRow, int currCol, int rows, int cols){
+        if(currRow <0 || currRow>=rows || currCol <0 || currCol>=cols || grid[currRow][currCol] == '0')
+        {
+            return;
+        }
+
+        grid[currRow][currCol] = '0';
+       
+
+        helper(grid, currRow+1, currCol, rows, cols);
+        helper(grid, currRow-1, currCol, rows, cols);
+        helper(grid, currRow, currCol+1, rows, cols);
+        helper(grid, currRow, currCol-1, rows, cols);
+
+    }
+    
+    public int numIslands(char[][] grid) {
+        if(null == grid || grid.length ==0){
+            return 0;
+        }
+        int rows = grid.length;
+        int cols = grid[0].length;
+       
+        int ans = 0;
+        for(int i=0;i<rows;i++){
+            for(int j=0;j<cols;j++){
+                if(grid[i][j] == '1'){
+                    ans++;
+                    helper(grid,i,j, rows, cols);
+                }
+            }
+        }
+        return ans;
+    }
+}
