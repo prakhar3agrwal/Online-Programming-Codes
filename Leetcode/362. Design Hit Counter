@@ -1,0 +1,45 @@
+https://leetcode.com/problems/design-hit-counter
+
+class HitCounter {
+
+
+    Deque<Integer> deque = null;
+    /** Initialize your data structure here. */
+    public HitCounter() {
+        deque = new LinkedList<Integer>();
+    }
+    
+    private void deleteOldHits(int timestamp){
+        int len = deque.size();
+        while(len>0){
+            int currTimestamp = deque.getFirst();
+            if(timestamp - currTimestamp >=300){
+                deque.removeFirst();
+            }else{
+                return;
+            }
+            len--;
+        }
+    }
+    
+    /** Record a hit.
+        @param timestamp - The current timestamp (in seconds granularity). */
+    public void hit(int timestamp) {
+        deque.addLast(timestamp);
+        deleteOldHits(timestamp);
+    }
+    
+    /** Return the number of hits in the past 5 minutes.
+        @param timestamp - The current timestamp (in seconds granularity). */
+    public int getHits(int timestamp) {
+        deleteOldHits(timestamp);
+        return deque.size();
+    }
+}
+
+/**
+ * Your HitCounter object will be instantiated and called as such:
+ * HitCounter obj = new HitCounter();
+ * obj.hit(timestamp);
+ * int param_2 = obj.getHits(timestamp);
+ */
