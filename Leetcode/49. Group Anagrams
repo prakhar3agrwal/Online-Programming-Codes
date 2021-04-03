@@ -1,0 +1,39 @@
+https://leetcode.com/problems/group-anagrams
+
+class Solution {
+    private String getFrequencyKey(int[] freq){
+        StringBuilder sb = new StringBuilder();
+        for(int i=0;i<26;i++){
+            sb.append(Integer.toString(freq[i]));
+            sb.append("#");
+        }
+        return sb.toString();
+    }
+    
+    private int[] getFreq(String str){
+        int[] freq = new int[26];
+        int len = str.length() - 1;
+        while(len>=0){
+            freq[str.charAt(len--)-'a']++;
+        }
+        return freq;
+    }
+    
+    public List<List<String>> groupAnagrams(String[] strs) {
+        List<List<String>> ans = new ArrayList<>();
+        int n = strs.length;
+        if(0==n){
+            return ans;
+        }
+        Map<String, List<String>> mp = new HashMap<>();
+        for(int i=0;i<n;i++){
+            int[] freq = getFreq(strs[i]);
+            String key = getFrequencyKey(freq);
+            List<String> list = mp.getOrDefault(key, new ArrayList<String>());
+            list.add(strs[i]);
+            mp.put(key,list);
+        }
+        mp.forEach((k,v)->ans.add(v));
+        return ans;
+    }
+}
