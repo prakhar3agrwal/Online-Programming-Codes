@@ -1,0 +1,52 @@
+https://leetcode.com/problems/find-k-closest-elements
+
+class Solution {
+    private int getClosestValueIndex(List<Integer> arr, int x){
+        
+        int low = 0;
+        int high = arr.size() - 1;
+        int mid = (low+high)/2;
+        while(low<high){
+            if(arr.get(mid)==x){
+                return mid;
+            }
+            if(x<=arr.get(mid)){
+                high = mid-1;
+            }else{
+                low = mid+1;
+            }
+            mid = (low+high)/2;
+        }
+        return mid;
+    }
+    
+    public List<Integer> findClosestElements(int[] arrI, int k, int x) {
+        List<Integer> arr = IntStream.of(arrI).boxed().collect(Collectors.toList());
+        int n = arr.size();
+        
+        if(x<arr.get(0)){
+            return  arr.subList(0, k);
+        }
+        if(x>arr.get(n-1)){
+            return  arr.subList(n - k, n);
+        }
+        List<Integer> ans = new ArrayList<>();
+        int mid = getClosestValueIndex(arr,x);
+        int left = mid-1; 
+        int right = mid;
+        int leftVal, rightVal;
+        while(ans.size()<k){
+            leftVal = left>=0 ? arr.get(left) : Integer.MAX_VALUE;
+            rightVal = right<n ? arr.get(right) : Integer.MAX_VALUE;
+ 
+            if(Math.abs(leftVal-x) <= Math.abs(rightVal-x)){
+                ans.add(0,leftVal);
+                left--;
+            }else{
+                ans.add(rightVal);
+                right++;
+            }
+        }
+        return ans;
+    }
+}
