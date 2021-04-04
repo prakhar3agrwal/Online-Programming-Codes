@@ -1,0 +1,36 @@
+https://leetcode.com/problems/inorder-successor-in-bst
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    boolean isEncountered = false;
+    TreeNode ans = null;
+    private void inOrder(TreeNode root, TreeNode needle){
+        if(root == null){
+            return;
+        } 
+        inOrder(root.left, needle);
+        if(isEncountered == true && ans == null){
+            ans = root;
+        }
+        if(needle==root){
+            isEncountered = true;
+        }
+        inOrder(root.right, needle);
+    }
+    
+    public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
+        if(root == null || p == null){
+            return ans;
+        }
+        inOrder(root, p);
+        return ans;
+    }
+}
