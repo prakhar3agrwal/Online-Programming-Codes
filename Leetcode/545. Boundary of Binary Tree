@@ -1,0 +1,92 @@
+https://leetcode.com/problems/boundary-of-binary-tree
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    
+    private boolean isLeaf(TreeNode root){
+        if(root == null){
+            return false;
+        }
+        return (root.left==null && root.right==null);
+    }
+    
+    private List<Integer> leftBoundary(TreeNode root){
+        List<Integer> list= new ArrayList<>();
+        if(root.left == null){
+            return list;
+        }
+        
+        TreeNode temp = root.left;
+        while(temp!=null){
+            if(isLeaf(temp)){
+                break;
+            }
+            list.add(temp.val);
+            temp = temp.left!=null ? temp.left:temp.right;
+        }
+        return list;
+    }
+    
+    private List<Integer> rightBoundary(TreeNode root){
+        List<Integer> list= new ArrayList<>();
+        if(root.right == null){
+            return list;
+        }
+        
+        Stack<Integer> s = new Stack<>();
+        TreeNode temp = root.right;
+        while(temp!=null){
+            if(isLeaf(temp)){
+                break;
+            }
+            s.add(temp.val);
+            temp = temp.right!=null ? temp.right:temp.left;
+        }
+        while(!s.isEmpty()){
+            list.add(s.pop());    
+        }
+        return list;
+    }
+    
+    private void getLeaves(TreeNode root, List<Integer> list){
+        if(root == null){
+            return;
+        }
+        if(isLeaf(root)){
+            list.add(root.val);
+        }
+        getLeaves(root.left, list);
+        getLeaves(root.right, list);
+    }
+    
+    public List<Integer> boundaryOfBinaryTree(TreeNode root) {
+        List<Integer> ans = new ArrayList<>();
+        if(root == null){
+            return ans;
+        }
+        ans.add(root.val);
+        if(isLeaf(root)){
+            return ans;
+        }
+        ans.addAll(leftBoundary(root));
+        List<Integer> list = new ArrayList<>();
+        getLeaves(root, list);
+        ans.addAll(list);
+        ans.addAll(rightBoundary(root));
+        return ans;
+    }
+}
