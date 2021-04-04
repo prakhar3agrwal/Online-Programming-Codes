@@ -1,0 +1,43 @@
+https://leetcode.com/problems/inorder-successor-in-bst-ii
+
+/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public Node left;
+    public Node right;
+    public Node parent;
+};
+*/
+
+class Solution {
+    private Node getTreeRoot(Node node){
+        Node root = node;
+        while(root.parent!=null){
+            root = root.parent;
+        }
+        return root;
+    }
+    
+    boolean isEncountered = false;
+    Node ans = null;
+    private void inOrder(Node root, Node needle){
+        if(root == null){
+            return;
+        } 
+        inOrder(root.left, needle);
+        if(isEncountered == true && ans == null){
+            ans = root;
+        }
+        if(needle==root){
+            isEncountered = true;
+        }
+        inOrder(root.right, needle);
+    }
+    
+    public Node inorderSuccessor(Node node) {
+        Node root = getTreeRoot(node);
+        inOrder(root, node);
+        return ans;
+    }
+}
