@@ -9,17 +9,10 @@ class Solution {
         dp[0] = true;
         for(int i=1;i<=len;i++){
             String subStr = s.substring(0,i);
-            if(words.contains(subStr)){
-                dp[i] = true;
-                continue;
-            }
             for(int j=0;j<i;j++){
-                if(dp[j] == true){
-                    String x = subStr.substring(j);
-                    if(words.contains(x)){
-                        dp[i] = true;
-                        break;
-                    }
+                if(dp[j] == true && words.contains(subStr.substring(j))){
+                    dp[i] = true;
+                    break;
                 }
             }
         }
