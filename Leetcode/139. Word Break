@@ -1,0 +1,28 @@
+https://leetcode.com/problems/word-break
+
+class Solution {
+    public boolean wordBreak(String s, List<String> wordDict) {
+        Set<String> words = new HashSet<>(wordDict);
+        
+        int len = s.length();
+        boolean[] dp = new boolean[len+1];
+        dp[0] = true;
+        for(int i=1;i<=len;i++){
+            String subStr = s.substring(0,i);
+            if(words.contains(subStr)){
+                dp[i] = true;
+                continue;
+            }
+            for(int j=0;j<i;j++){
+                if(dp[j] == true){
+                    String x = subStr.substring(j);
+                    if(words.contains(x)){
+                        dp[i] = true;
+                        break;
+                    }
+                }
+            }
+        }
+        return dp[len];
+    }
+}
