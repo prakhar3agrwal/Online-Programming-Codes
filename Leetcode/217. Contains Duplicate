@@ -1,0 +1,7 @@
+https://leetcode.com/problems/contains-duplicate
+
+class Solution {
+    public boolean containsDuplicate(int[] nums) {
+        return (nums.length != Arrays.stream(nums).distinct().boxed().collect(Collectors.toList()).size());
+    }
+}
