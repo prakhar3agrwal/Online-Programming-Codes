@@ -1,0 +1,52 @@
+https://leetcode.com/problems/insert-delete-getrandom-o1/
+
+import java.util.Random;
+class RandomizedSet {
+
+    List<Integer> list = null;
+    Map<Integer, Integer> mp = null;
+    Random rand = new Random();  
+    /** Initialize your data structure here. */
+    public RandomizedSet() {
+        list = new ArrayList<>();
+        mp = new HashMap<>();
+    }
+    
+    /** Inserts a value to the set. Returns true if the set did not already contain the specified element. */
+    public boolean insert(int val) {
+        if(mp.containsKey(val)){
+            return false;
+        }
+        mp.put(val, list.size());
+        list.add(list.size(),val);
+        return true;
+    }
+    
+    /** Removes a value from the set. Returns true if the set contained the specified element. */
+    public boolean remove(int val) {
+        int ind= mp.getOrDefault(val, -1);
+        if(-1 == ind){
+            return false;
+        }
+        int lastElement = list.get(list.size()-1);
+        list.set(ind, lastElement);
+        list.remove(list.size()-1);
+        mp.put(lastElement, ind);
+        mp.remove(val);
+        return true;
+    }
+    
+    /** Get a random element from the set. */
+    public int getRandom() {
+        int ind = rand.nextInt(list.size());
+        return list.get(ind);
+    }
+}
+
+/**
+ * Your RandomizedSet object will be instantiated and called as such:
+ * RandomizedSet obj = new RandomizedSet();
+ * boolean param_1 = obj.insert(val);
+ * boolean param_2 = obj.remove(val);
+ * int param_3 = obj.getRandom();
+ */
