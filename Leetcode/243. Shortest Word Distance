@@ -1,0 +1,21 @@
+https://leetcode.com/problems/shortest-word-distance
+
+class Solution {
+    public int shortestDistance(String[] wordsDict, String word1, String word2) {
+        int len = wordsDict.length;
+        int ans = len;
+        int ind1 = -1;
+        int ind2 = -1;
+        for(int i=0;i<len;i++){
+            if(wordsDict[i].equals(word1)){
+                ind1 = i;
+            }else if(wordsDict[i].equals(word2)){
+                ind2 = i;
+            }
+            if(ind1 != -1 && ind2!=-1){
+                ans = Math.min(ans, Math.abs(ind1-ind2));
+            }
+        }
+        return ans;
+    }
+}
