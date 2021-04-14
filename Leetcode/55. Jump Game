@@ -1,0 +1,17 @@
+https://leetcode.com/problems/jump-game
+
+class Solution {
+    public boolean canJump(int[] nums) {
+        int maxReach = nums[0];
+        int len = nums.length;
+        for(int i=1;i<len;i++){
+            if(maxReach < i){
+                return false;
+            }
+            if(nums[i]>0){
+                maxReach = Math.max(maxReach, nums[i]+i);    
+            }
+        }
+        return maxReach>=len-1;
+    }
+}
