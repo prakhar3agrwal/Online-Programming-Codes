@@ -1,0 +1,35 @@
+https://leetcode.com/problems/maximal-network-rank
+
+class Solution {
+    private String getKey(int x, int y){
+        if(y<x){
+            int temp = x;
+            x = y;
+            y = temp;
+        }
+        String ans = Integer.toString(x)+"-"+Integer.toString(y);
+        return ans;
+    }
+    
+    public int maximalNetworkRank(int n, int[][] roads) {
+        int[] freq = new int[n];
+        Arrays.fill(freq,0);
+        int len = roads.length;
+        Map<String, Integer> mp = new HashMap<>();
+        for(int i=0;i<len;i++){
+            freq[roads[i][0]]++;
+            freq[roads[i][1]]++;
+            mp.put(getKey(roads[i][0], roads[i][1]), 1);
+        }
+        
+        int ans = 0;
+        for(int i=0;i<n;i++){
+            for(int j=i+1;j<n;j++){
+                int temp = freq[i]+freq[j];
+                temp = temp - mp.getOrDefault(getKey(i,j),0);
+                ans = Math.max(ans, temp);
+            }
+        }
+        return ans;
+    }
+}
