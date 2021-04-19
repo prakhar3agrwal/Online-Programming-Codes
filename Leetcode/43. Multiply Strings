@@ -1,0 +1,96 @@
+https://leetcode.com/problems/multiply-strings
+
+
+class Solution {
+    
+    private String[] multiplicationValues = new String[10];
+    private void multiplyWithSingleDigit(String num, int digit){
+        int len = num.length();
+        StringBuilder ans = new StringBuilder();
+        int carry = 0;
+        for(int i=len-1;i>=0;i--){
+            int currDigit = num.charAt(i)-'0';
+            int currVal = currDigit*digit + carry;
+            ans.append(Integer.toString(currVal%10));
+            carry= currVal/10;
+        }
+        if(carry>0){
+            ans.append(Integer.toString(carry));
+        }
+        multiplicationValues[digit] = ans.reverse().toString();
+    }
+    
+    private void precompute(String num){
+        multiplicationValues[0] = "";
+        for(int i=1;i<10;i++){
+            multiplyWithSingleDigit(num, i);
+        }
+    }
+    
+    private String getSum(String s1, String s2){
+        int len1 = s1.length();
+        int len2 = s2.length();
+        
+        StringBuilder sb1 = new StringBuilder(s1);
+        s1 = sb1.reverse().toString();
+        StringBuilder sb2 = new StringBuilder(s2);
+        s2 = sb2.reverse().toString();
+        
+        StringBuilder ans = new StringBuilder();
+        int carry = 0;
+        int i=0;
+        while(i<len1 && i<len2){
+            int currVal = (s1.charAt(i) -'0') + (s2.charAt(i) -'0') + carry;
+            ans.append(Integer.toString(currVal%10));
+            carry= currVal/10;
+            i++;
+        }
+        while(i<len1){
+            int currVal = (s1.charAt(i) -'0') + carry;
+            ans.append(Integer.toString(currVal%10));
+            carry= currVal/10;
+            i++;
+        }
+        while(i<len2){
+            int currVal = (s2.charAt(i) -'0') + carry;
+            ans.append(Integer.toString(currVal%10));
+            carry= currVal/10;
+            i++;
+        }
+        if(carry>0){
+            ans.append(Integer.toString(carry));
+        }
+        return ans.reverse().toString();
+    }
+    
+    private String appendZeros(String num, int zeroCt){
+        StringBuilder ans = new StringBuilder(num);
+        while(zeroCt>0){
+            ans.append("0");
+            zeroCt--;
+        }
+        return ans.toString();
+    }
+    public String multiply(String num1, String num2) {
+        int len1 = num1.length();
+        int len2 = num2.length();
+        if(num1.equals("0") || num2.equals("0")){
+            return "0";
+        }
+        String ans = "";
+        precompute(num1);
+        
+        int i=len2-1;
+        while(i>=0){
+            int currDigit = num2.charAt(i)-'0';
+            if(currDigit !=0){
+                String currMulVal = multiplicationValues[currDigit];
+                int zerosCount = len2-1-i;
+                ans = getSum(ans, appendZeros(currMulVal,zerosCount));
+            }
+            i--;
+        }
+        
+        return ans.toString();
+    }
+}
