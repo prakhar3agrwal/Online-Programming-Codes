@@ -1,0 +1,25 @@
+https://leetcode.com/problems/partition-labels
+
+class Solution {
+    public List<Integer> partitionLabels(String s) {
+        List<Integer> ans = new ArrayList<>();
+        int len = s.length();
+        int[] lastIndex = new int[26];
+        Arrays.fill(lastIndex, -1);
+        for(int i = len-1;i>=0;i--){
+            if(lastIndex[s.charAt(i)-'a'] ==-1){
+                lastIndex[s.charAt(i)-'a'] = i;
+            }
+        }
+        int maxReach = -1;
+        int totalLengthProcessed = 0;
+        for(int i=0;i<len;i++){
+            maxReach = Math.max(maxReach, lastIndex[s.charAt(i)-'a']);
+            if(maxReach == i){
+                ans.add(i+1-totalLengthProcessed);
+                totalLengthProcessed = i+1; 
+            }
+        }
+        return ans;
+    }
+}
