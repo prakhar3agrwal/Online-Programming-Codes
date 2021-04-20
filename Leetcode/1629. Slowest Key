@@ -1,0 +1,22 @@
+https://leetcode.com/problems/slowest-key
+
+
+class Solution {
+    public char slowestKey(int[] releaseTimes, String keysPressed) {
+        int len = keysPressed.length();
+        int maxTime = releaseTimes[0];
+        char ans = keysPressed.charAt(0);
+        
+        for(int i=1;i<len;i++){
+            int currDiff = releaseTimes[i]-releaseTimes[i-1];
+            if(currDiff==maxTime){
+                maxTime = currDiff;
+                ans = ans<keysPressed.charAt(i)? keysPressed.charAt(i): ans;
+            }else if(currDiff>maxTime){
+                maxTime = currDiff;
+                ans = keysPressed.charAt(i);
+            }
+        }
+        return ans;
+    }
+}
