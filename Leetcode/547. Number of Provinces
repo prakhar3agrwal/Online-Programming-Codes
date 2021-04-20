@@ -1,0 +1,33 @@
+https://leetcode.com/problems/number-of-provinces
+
+class Solution {
+    public int findCircleNum(int[][] isConnected) {
+        int len = isConnected.length;
+        if(len<2){
+            return len;
+        }
+        boolean[] visited = new boolean[len+1];
+        Arrays.fill(visited, false);
+        
+        Queue<Integer> q = new LinkedList<>();
+        int ans = 0;
+        for(int i=1;i<=len;i++){
+            if(visited[i]==false){
+                q.add(i);
+                ans++;
+                while(!q.isEmpty()){
+                    int currNode = q.poll();
+                    for(int j=1;j<=len;j++){
+                        if(visited[j]==false){
+                            if(isConnected[currNode-1][j-1] ==1){
+                                q.add(j);
+                            }    
+                        }
+                    }
+                    visited[currNode]=true;
+                }
+            }
+        }
+        return ans;
+    }
+}
