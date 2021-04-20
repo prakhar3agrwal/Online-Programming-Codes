@@ -1,0 +1,47 @@
+https://leetcode.com/problems/maximum-average-subtree
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    class Entity{
+        int nodeCount;
+        int sum;
+        
+        Entity(int nodeCount, int sum){
+            this.nodeCount = nodeCount;
+            this.sum = sum;
+        }
+    }
+    
+    double ans = 0.0;
+    private Entity helper(TreeNode root){
+        if(root == null){
+            return new Entity(0,0);
+        }
+        Entity left = helper(root.left);
+        Entity right = helper(root.right);
+        
+        int currSum = root.val+left.sum+right.sum;
+        int totalNodeCt = 1+ left.nodeCount + right.nodeCount;
+        
+        ans = Math.max(ans, (double)currSum/totalNodeCt);
+        return new Entity(totalNodeCt, currSum);
+    }
+    public double maximumAverageSubtree(TreeNode root) {
+        helper(root);
+        return ans;
+    }
+}
