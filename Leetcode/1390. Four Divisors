@@ -1,0 +1,26 @@
+https://leetcode.com/problems/four-divisors/submissions/
+
+class Solution {
+    public int sumFourDivisors(int[] nums) {
+        int len = nums.length;
+        int ans = 0;
+        for(int i=0;i<len;i++){
+            int divisorCt = 0;
+            int divisorSum = 0;
+            for(int j=1;j*j<=nums[i];j++){
+                if(nums[i]%j == 0){
+                    divisorCt++;
+                    divisorSum += j;
+                    if(j*j != nums[i]){
+                        divisorCt++;
+                        divisorSum += nums[i]/j;
+                    }
+                }
+            }
+            if(divisorCt == 4){
+                ans += divisorSum;
+            }
+        }
+        return ans;
+    }
+}
