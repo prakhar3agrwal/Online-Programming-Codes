@@ -1,0 +1,25 @@
+https://leetcode.com/problems/continuous-subarray-sum/submissions/
+
+class Solution {
+    public boolean checkSubarraySum(int[] nums, int k) {
+        int len = nums.length;
+        if(len <2){
+            return false;
+        }
+        Map<Integer,Integer> mp = new HashMap<>();
+        mp.put(0,-1);
+        int sum = 0;
+        for(int i=0;i<len;i++){
+            sum = (sum + nums[i])%k;
+            int currRemainder = sum;
+            if(mp.containsKey(currRemainder)){
+                if(i-mp.get(currRemainder)>1)
+                return true;
+            }else{
+                mp.put(currRemainder, i);    
+            }
+            
+        }
+        return false;
+    }
+}
