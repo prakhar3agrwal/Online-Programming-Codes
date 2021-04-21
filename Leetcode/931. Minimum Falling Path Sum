@@ -1,0 +1,29 @@
+https://leetcode.com/problems/minimum-falling-path-sum
+
+class Solution {
+    public int minFallingPathSum(int[][] matrix) {
+        int n = matrix.length;
+        
+        for(int i=1;i<n;i++){
+            for(int j=0;j<n;j++){
+                int leftDiagonal = Integer.MAX_VALUE;
+                if(j>0){
+                    leftDiagonal = matrix[i-1][j-1];
+                }
+                
+                int rightDiagonal = Integer.MAX_VALUE;
+                if(j<n-1){
+                    rightDiagonal = matrix[i-1][j+1];
+                }
+                
+                matrix[i][j] += Math.min(leftDiagonal, Math.min(rightDiagonal, matrix[i-1][j]));
+            }
+        }
+        
+        int ans = matrix[n-1][0];
+        for(int i=1;i<n;i++){
+            ans = Math.min(ans, matrix[n-1][i]);
+        }
+        return ans;
+    }
+}
