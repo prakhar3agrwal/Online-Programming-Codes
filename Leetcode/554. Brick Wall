@@ -1,0 +1,22 @@
+https://leetcode.com/problems/brick-wall/
+
+class Solution {
+    public int leastBricks(List<List<Integer>> wall) {
+        int n = wall.size();
+        Map<Integer, Integer> mp = new HashMap<>();
+        
+        for(int i=0;i<n;i++){
+            int m = wall.get(i).size();
+            int sum = 0;
+            for(int j=0;j<m-1;j++){
+                sum += wall.get(i).get(j);
+                mp.put(sum, mp.getOrDefault(sum,0)+1);
+            }
+        }
+        int ans = n;
+        for(int key: mp.keySet()){
+            ans = Math.min(ans, n-mp.get(key));
+        }
+        return ans;
+    }
+}
