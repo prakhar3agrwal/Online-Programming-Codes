@@ -1,0 +1,22 @@
+https://leetcode.com/problems/count-binary-substrings/
+
+class Solution {
+    public int countBinarySubstrings(String s) {
+        int len = s.length();
+        if(len <2){
+            return 0;
+        }
+        int curr = 1, prev = 0, ans = 0;
+        for(int i=1;i<len;i++){
+            if(s.charAt(i)!=s.charAt(i-1)){
+                ans += Math.min(prev, curr);
+                prev = curr;
+                curr = 1;
+            }else{
+                curr++;
+            }
+        }
+        ans += Math.min(prev,curr);
+        return ans;
+    }
+}
