@@ -1,0 +1,26 @@
+https://leetcode.com/problems/minimum-time-difference
+
+class Solution {
+    
+    private int getTimeInInt(String time){
+        int timeInInt = 0;
+        String[] tokens = time.split(":");
+        int hour = Integer.parseInt(tokens[0].trim());
+        int minutes = Integer.parseInt(tokens[1].trim());
+        
+        return hour*60+minutes;
+    }
+    public int findMinDifference(List<String> timePoints) {
+        int n = timePoints.size();
+        List<Integer> times = new ArrayList<>();
+        for(int i=0;i<n;i++){
+            times.add(getTimeInInt(timePoints.get(i)));
+        }
+        Collections.sort(times);
+        int ans = (times.get(0)-times.get(n-1) + 1440)%1440;
+        for(int i=1;i<n;i++){
+            ans = Math.min(ans,(1440+ times.get(i)-times.get(i-1))%1440);
+        }
+        return ans;
+    }
+}
