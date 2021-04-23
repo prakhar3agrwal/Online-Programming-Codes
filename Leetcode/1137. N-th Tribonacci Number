@@ -1,0 +1,30 @@
+https://leetcode.com/problems/n-th-tribonacci-number
+
+class Solution {
+    public int tribonacci(int n) {
+        int one = 0;
+        int two = 1;
+        int three = 1;
+        int ans = 0;
+        switch (n){
+            case 0:
+                ans = 0;
+                break;
+            case 1: case 2:
+                ans  = 1;
+                break;
+            default:
+                for(int i=3;i<=n;i++){
+                    int temp = one+two+three;
+                    one = two;
+                    two = three;
+                    three = temp;
+                }
+                ans = three;
+                break;
+                
+        }
+        return ans;
+        
+    }
+}
