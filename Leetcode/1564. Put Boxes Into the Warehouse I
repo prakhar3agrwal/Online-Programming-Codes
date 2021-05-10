@@ -1,0 +1,32 @@
+https://leetcode.com/problems/put-boxes-into-the-warehouse-i
+
+
+class Solution {
+    public int maxBoxesInWarehouse(int[] boxes, int[] warehouse) {
+        int n = boxes.length;
+        int m = warehouse.length;
+        Arrays.sort(boxes);
+
+        
+        int ans = 0;
+        int currMin = warehouse[0];
+        int correctBox = n-1;
+        
+        for(int i=0;i<m;i++){
+            currMin = Math.min(currMin, warehouse[i]);
+            while(correctBox>=0){
+                if(boxes[correctBox]<=currMin){
+                    break;
+                }
+                correctBox--;
+            }
+            if(correctBox>=0){
+                correctBox--;
+                ans++;
+            }else{
+                break;
+            }
+        }
+        return ans;
+    }
+}
