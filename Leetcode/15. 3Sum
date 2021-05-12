@@ -1,0 +1,39 @@
+https://leetcode.com/problems/3sum
+
+
+class Solution {
+    public List<List<Integer>> threeSum(int[] nums) {
+        List<List<Integer>> ans = new ArrayList<>();
+        int len = nums.length;
+        if(0 == len){
+            return ans;
+        }
+        Arrays.sort(nums);
+        Map<List<Integer>, Boolean> mp = new HashMap<>();
+        for(int i=0;i<len;i++){
+            int left = i+1;
+            int right = len-1;
+            while(left<right){
+                int currVal = nums[i] + nums[left] + nums[right];
+                if(currVal == 0){
+                    List<Integer> tuple = new ArrayList<>();
+                    tuple.add(nums[i]);
+                    tuple.add(nums[left]);
+                    tuple.add(nums[right]);
+                    Collections.sort(tuple);
+                    
+                    if(!mp.containsKey(tuple)){
+                        mp.put(tuple, true);
+                        ans.add(tuple);
+                    }
+                    left++;
+                }else if(currVal <0){
+                    left++;
+                }else{
+                    right--;
+                }
+            }
+        }
+        return ans;
+    }
+}
