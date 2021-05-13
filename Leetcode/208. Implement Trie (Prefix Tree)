@@ -1,0 +1,67 @@
+https://leetcode.com/problems/implement-trie-prefix-tree
+
+
+class Trie {
+
+    class Node{
+        boolean isTerminal = false;
+        Node[] children = new Node[26];
+    }
+    
+    Node root = null;
+    
+    /** Initialize your data structure here. */
+    public Trie() {
+        root = new Node();    
+    }
+    
+    /** Inserts a word into the trie. */
+    public void insert(String word) {
+        int len = word.length();
+        Node currNode = root;
+        for(int i=0;i<len;i++){
+            int ind = word.charAt(i) - 'a';
+            if(currNode.children[ind] == null){
+                currNode.children[ind] = new Node();
+            }
+            currNode = currNode.children[ind];
+        }
+        currNode.isTerminal = true;
+    }
+    
+    /** Returns if the word is in the trie. */
+    public boolean search(String word) {
+        int len = word.length();
+        Node currNode = root;
+        for(int i=0;i<len;i++){
+            int ind = word.charAt(i) - 'a';
+            if(currNode.children[ind] == null){
+                return false;
+            }
+            currNode = currNode.children[ind];
+        }
+        return currNode.isTerminal;
+    }
+    
+    /** Returns if there is any word in the trie that starts with the given prefix. */
+    public boolean startsWith(String prefix) {
+        int len = prefix.length();
+        Node currNode = root;
+        for(int i=0;i<len;i++){
+            int ind = prefix.charAt(i) - 'a';
+            if(currNode.children[ind] == null){
+                return false;
+            }
+            currNode = currNode.children[ind];
+        }
+        return true;
+    }
+}
+
+/**
+ * Your Trie object will be instantiated and called as such:
+ * Trie obj = new Trie();
+ * obj.insert(word);
+ * boolean param_2 = obj.search(word);
+ * boolean param_3 = obj.startsWith(prefix);
+ */
