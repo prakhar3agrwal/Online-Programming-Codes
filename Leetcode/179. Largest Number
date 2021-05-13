@@ -1,0 +1,17 @@
+https://leetcode.com/problems/largest-number
+
+class Solution {
+    public String largestNumber(int[] nos) {
+        int n = nos.length;
+        List<String> nums = new ArrayList<>();
+        for(int i=0;i<n;i++){
+            nums.add(Integer.toString(nos[i]));
+        }
+        nums.sort((a,b) -> (b+a).compareTo(a+b));
+        String ans = String.join("", nums);
+        if(ans.charAt(0) == '0'){
+            ans = "0";
+        }
+        return ans;
+    }
+}
