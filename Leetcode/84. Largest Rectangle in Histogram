@@ -1,0 +1,69 @@
+https://leetcode.com/problems/largest-rectangle-in-histogram/
+
+class Solution {
+    
+    private boolean isSorted(int[] heights, int left, int right){
+        int i = left+1;
+        for(i = left+1;i<=right;i++){
+            if(heights[i] != heights[i-1]){
+                break;
+            }
+        }    
+        if(i==right+1){
+            return true;
+        }
+        if(heights[i]>heights[i-1]){
+            for(int j = i+1;j<=right;j++){
+                if(heights[j-1] > heights[j]){
+                    return false;
+                }
+                
+            }
+            return true;
+        }
+        for( int j = i+1;j<=right;j++){
+            if(heights[j-1] < heights[j]){
+                return false;
+            }
+        }   
+        return true;
+    }
+    
+    private int calculateAreaInSortedArray(int[] heights, int left, int right){
+        if(left == right){
+            return heights[left];
+        }
+        
+        int sortedHeights[] = Arrays.copyOfRange(heights, left, right+1);
+        Arrays.sort(sortedHeights);
+        int ans = 0;
+        int n = sortedHeights.length;
+        for(int i=0; i<n;i++){
+            ans = Math.max(ans, sortedHeights[i] * (n-1-i+1));
+        }
+        return ans;
+    }
+    
+    private int calculateArea(int[] heights, int left, int right){
+        if(left>right){
+            return 0;
+        }    
+        if(isSorted(heights, left, right)){
+            return calculateAreaInSortedArray(heights, left, right);
+        }
+        int minIndex = left;
+        for(int i = left+1;i<=right;i++){
+            if(heights[i]<heights[minIndex]){
+                minIndex = i;
+            }
+        }
+        return Math.max(heights[minIndex]*(right-left+1), 
+                        Math.max(calculateArea(heights, left, minIndex-1),
+                       calculateArea(heights, minIndex+1, right)));
+    }
+    
+    
+    public int largestRectangleArea(int[] heights) {
+        return calculateArea(heights, 0, heights.length-1);
+    }
+}
