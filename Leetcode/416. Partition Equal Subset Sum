@@ -1,0 +1,38 @@
+https://leetcode.com/problems/partition-equal-subset-sum
+
+
+class Solution {
+    
+    private boolean solve(int[] nums, int[][] dp, int ind, int remainingSum){
+        if(remainingSum == 0){
+            return true;
+        }
+        if(remainingSum <0 || ind<0){
+            return false;
+        }
+        if(dp[ind][remainingSum] !=-1){
+            return dp[ind][remainingSum] == 1;
+        }
+        dp[ind][remainingSum] =  (solve(nums, dp, ind-1, remainingSum-nums[ind]) || 
+            solve(nums, dp, ind-1, remainingSum)) == true ? 1:0;
+        return dp[ind][remainingSum] == 1;
+    }
+    
+    public boolean canPartition(int[] nums) {
+        int n = nums.length;
+        int sum = 0;
+        for(int x: nums){
+            sum += x;
+        }
+        if(sum%2 != 0 || n ==1){
+            return false;
+        }
+        int[][] dp = new int[n+1][sum/2+1];
+        for(int[] row: dp){
+            Arrays.fill(row, -1);
+        }
+        
+        return solve(nums,dp,  n-1, sum/2);    
+        
+    }
+}
