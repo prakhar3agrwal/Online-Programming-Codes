@@ -1,0 +1,73 @@
+https://leetcode.com/problems/maximum-product-subarray
+
+
+class Solution {
+    
+    private int subArrayProduct(int[] nums, int left, int right){
+        int negativeNumbers = 0;
+        int positiveNumbers = right-left+1;
+        int product = 1;
+        if(left == right){
+            return nums[left];
+        }
+        for(int i=left;i<=right;i++){
+            if(nums[i]<0){
+                negativeNumbers++;
+                positiveNumbers--;
+            }
+            product *= nums[i];
+        }
+        if(negativeNumbers%2 == 0){
+            return product;
+        }
+        
+        int leftProduct = product;
+        int i = left;
+        while(nums[i]>0){
+            leftProduct /= nums[i];
+            i++;
+        }
+        leftProduct/=nums[i];
+        
+        int rightProduct = product;
+        i = right;
+        while(nums[i]>0){
+            rightProduct /= nums[i];
+            i--;
+        }
+        rightProduct/=nums[i];
+        return Math.max(leftProduct, rightProduct);
+    }
+    
+    public int maxProduct(int[] nums) {
+        int n = nums.length;
+        int ans = nums[0];
+        int left;
+        int right = -1;
+        List<Integer> zeroIndices = new ArrayList<>();
+        for(int i=0;i<n;i++){
+            if(nums[i]==0){
+                zeroIndices.add(i);
+            }
+        }
+        
+        left = 0;right = n-1;
+        for(int i=0;i<zeroIndices.size();i++){
+            int currIndex = zeroIndices.get(i);
+            right = currIndex-1;
+            if(left<=right){
+                ans = Math.max(ans,subArrayProduct(nums, left, right));    
+            }
+            left = currIndex+1;
+        }
+        
+        if(zeroIndices.size()>0){
+            ans = Math.max(ans, 0);
+        }
+        if(left<=n-1){
+            ans = Math.max(ans,subArrayProduct(nums, left, n-1));        
+        }
+        
+        return ans;
+    }
+}
