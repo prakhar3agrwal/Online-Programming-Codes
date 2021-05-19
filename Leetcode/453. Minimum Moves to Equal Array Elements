@@ -1,0 +1,15 @@
+https://leetcode.com/problems/minimum-moves-to-equal-array-elements/
+
+class Solution {
+    public int minMoves(int[] nums) {
+        int ans = 0;
+        int minLElement = nums[0];
+        for(int num: nums){
+            minLElement = Math.min(minLElement, num);
+        }
+        for(int num: nums){
+            ans += Math.abs(num-minLElement);
+        }
+        return ans;
+    }
+}
