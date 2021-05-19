@@ -1,0 +1,23 @@
+https://leetcode.com/problems/minimum-moves-to-equal-array-elements-ii/
+
+
+class Solution {
+
+    public int minMoves2(int[] nums) {
+        int n = nums.length;
+        if(n==1){
+            return 0;
+        }
+        Arrays.sort(nums);
+        int median = nums[n/2];
+        if(n%2==0){
+            median += nums[(n-1)/2];
+            median /=2;
+        }
+        int ans = 0;
+        for(int i=0;i<n;i++){
+            ans += Math.abs(median-nums[i]);
+        }
+        return ans;
+    }
+}
