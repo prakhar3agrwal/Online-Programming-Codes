@@ -1,0 +1,23 @@
+https://leetcode.com/problems/tuple-with-same-product
+
+class Solution {
+    
+    public int tupleSameProduct(int[] nums) {
+        int ans = 0;
+        int n = nums.length;
+        
+        Map<Integer, Integer> mp = new HashMap<>();
+        for(int i=0;i<n;i++){
+            for(int j=i+1;j<n;j++){
+                int prod = nums[i]*nums[j];
+                mp.put(prod, mp.getOrDefault(prod,0)+1);
+            }
+        }
+        
+        for(Integer prod: mp.keySet()){
+            int ct = mp.get(prod);
+            ans += ((ct)*(ct-1))/2;
+        }
+        return ans * 8;
+    }
+}
