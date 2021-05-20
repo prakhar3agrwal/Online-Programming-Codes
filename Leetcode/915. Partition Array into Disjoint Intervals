@@ -1,0 +1,24 @@
+https://leetcode.com/problems/partition-array-into-disjoint-intervals
+
+class Solution {
+    public int partitionDisjoint(int[] nums) {
+        int ans = 1;
+        int n = nums.length;
+        int[] minSubarray = new int[n];
+        
+        minSubarray[n-1] = nums[n-1];
+        for(int i=n-2;i>=0;i--){
+            minSubarray[i] = Math.min(nums[i], minSubarray[i+1]);
+        }
+        
+        int currMax = nums[0];
+        for(int i=0;i<n-1;i++){
+            currMax = Math.max(currMax, nums[i]);
+            if(currMax<=minSubarray[i+1]){
+                ans = i+1;
+                break;
+            }
+        }
+        return ans;
+    }
+}
