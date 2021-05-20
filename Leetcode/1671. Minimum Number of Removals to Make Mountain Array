@@ -1,0 +1,39 @@
+https://leetcode.com/problems/minimum-number-of-removals-to-make-mountain-array
+
+
+class Solution {
+    public int minimumMountainRemovals(int[] nums) {
+        int n = nums.length;
+        
+        int ans = n;
+        int[] dpLeft = new int[n];
+        int[] dpRight = new int[n];
+        
+        Arrays.fill(dpLeft,1);
+        Arrays.fill(dpRight,1);
+        
+        for(int i=1;i<n;i++){
+            for(int j=0;j<i;j++){
+                if(nums[i]>nums[j]){
+                    dpLeft[i] = Math.max(dpLeft[i], dpLeft[j]+1);
+                }
+            }
+        }
+        
+        for(int i=n-2;i>=0;i--){
+            for(int j=n-1;j>i;j--){
+                if(nums[i]>nums[j]){
+                    dpRight[i] = Math.max(dpRight[i], dpRight[j]+1);
+                }
+            }
+        }
+        
+        for(int i=0;i<n;i++){
+            if(dpLeft[i]>1 && dpRight[i]>1){
+                ans = Math.min(ans, n-(dpLeft[i]+dpRight[i]-1));                
+            }
+        }
+        return ans;
+            
+    }
+}
