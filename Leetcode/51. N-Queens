@@ -1,0 +1,87 @@
+https://leetcode.com/problems/n-queens/
+
+class Solution {
+    int n = -1;
+    
+    List<List<String>> ans = new ArrayList<>();
+    private List<String> constructValidBoard(char[][] board){
+        List<String> ans = new ArrayList<>();
+        
+        for(int i=0;i<n;i++){
+            String row = new String(board[i]);
+            ans.add(row);
+        }
+        return ans;
+    }
+    
+    private boolean isColSettingValid(char[][] board, int col){
+        int totalQueens = 0;
+        for(int i=0;i<n;i++){
+            if(board[i][col] == 'Q'){
+                totalQueens++;
+            }
+        }
+        return totalQueens<=1?true:false;
+    }
+    
+    private boolean isDiagonalSettingValid(char[][] board, int row, int col){
+        int currRow = row;
+        int currCol = col;
+        
+        int totalQueens = 0;
+        while(currRow>=0 &&  currCol>=0){
+            if(board[currRow][currCol] == 'Q'){
+                totalQueens++;
+            }
+            currRow--;
+            currCol--;
+        }
+        if(totalQueens>=2){
+            return false;
+        }
+        
+        currRow = row;
+        currCol = col;
+        
+        totalQueens = 0;
+        while(currRow>=0 &&  currCol<n){
+            if(board[currRow][currCol] == 'Q'){
+                totalQueens++;
+            }
+            currRow--;
+            currCol++;
+        }
+        return totalQueens<=1?true:false;
+    }
+    
+    private boolean isValidState(char[][] board, int row, int col){
+        return isColSettingValid(board, col) && isDiagonalSettingValid(board, row, col);
+    }
+    private void backtrack(char[][] board, int row){
+        if(row == n){
+            ans.add(constructValidBoard(board));
+            return;
+        }
+        
+        for(int i=0;i<n;i++){
+            board[row][i] = 'Q';
+            if(isValidState(board, row, i)){
+                backtrack(board, row+1);
+            }
+            board[row][i] = '.';
+        }
+    }
+    
+    public List<List<String>> solveNQueens(int n) {
+        this.n = n;
+        char[][] board = new char[n][n];
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                board[i][j] = '.';
+            }
+        }
+        backtrack(board, 0);
+        return ans;
+        
+    }
+}
