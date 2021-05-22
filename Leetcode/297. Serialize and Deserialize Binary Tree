@@ -1,0 +1,56 @@
+https://leetcode.com/problems/serialize-and-deserialize-binary-tree/
+
+
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Codec {
+
+    String delimeter = ",";
+    private String serializeHelper(TreeNode root){
+        if(null == root){
+            return "null";
+        }
+        String tree = Integer.toString(root.val);
+        return tree + delimeter + serializeHelper(root.left) + delimeter + serializeHelper(root.right);
+    }
+    
+    // Encodes a tree to a single string.
+    public String serialize(TreeNode root) {
+        return serializeHelper(root);
+    }
+
+    private TreeNode deserializeHelper(List<String> vals){
+        if(vals.size() == 0){
+            return null;
+        }
+        String currVal = vals.get(0);
+        if("null".equalsIgnoreCase(currVal)){
+            vals.remove(0);
+            return null;
+        }
+        TreeNode currNode = new TreeNode(Integer.parseInt(currVal));
+        vals.remove(0);
+        currNode.left = deserializeHelper(vals);
+        currNode.right = deserializeHelper(vals);
+        return currNode;
+    }
+    
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+        List<String> vals = new LinkedList<String>(Arrays.asList(data.split(delimeter)));
+        return deserializeHelper(vals);
+    }
+}
+
+// Your Codec object will be instantiated and called as such:
+// Codec ser = new Codec();
+// Codec deser = new Codec();
+// TreeNode ans = deser.deserialize(ser.serialize(root));
