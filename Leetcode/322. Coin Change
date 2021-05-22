@@ -1,0 +1,35 @@
+https://leetcode.com/problems/coin-change/
+
+
+class Solution {
+    int[] dp = null;
+    private int solve(int[] coins, int remainingAmount){
+        if(remainingAmount==0){
+            return 0;
+        }
+        
+        if(dp[remainingAmount-1]!=0){
+            return dp[remainingAmount-1];
+        }
+        int ans = Integer.MAX_VALUE;
+        for(int coin: coins){
+            if(coin <= remainingAmount){
+               int temp = solve(coins, remainingAmount-coin);
+                if(temp>=0 && temp<ans){
+                    ans = temp+1;
+                }
+            }
+        }
+        dp[remainingAmount-1] = (ans == Integer.MAX_VALUE)?-1:ans;
+        return dp[remainingAmount-1];
+        
+    }
+    public int coinChange(int[] coins, int amount) {
+        if(amount == 0){
+            return 0;
+        }
+        dp = new int[amount+1];
+        solve(coins, amount);
+        return dp[amount-1];
+    }
+}
