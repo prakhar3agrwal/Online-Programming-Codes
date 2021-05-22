@@ -1,0 +1,77 @@
+https://leetcode.com/problems/sudoku-solver
+
+
+class Solution {
+    
+    int[][] rows = new int[9][10];
+    int[][] cols = new int[9][10];
+    int[][] boxes = new int[9][10];
+    
+    
+    private boolean isValidState(int row, int col, int digit){
+        int ind = (row/3) * 3 + (col/3);
+        return rows[row][digit] + cols[col][digit] + boxes[ind][digit] == 0;
+    }
+    
+    private void placeNumber(char[][] board, int row, int col, int digit){
+        int ind = (row/3) * 3 + (col/3);
+        
+        rows[row][digit]++;
+        cols[col][digit]++;
+        boxes[ind][digit]++;
+        board[row][col] = (char)(digit + '0');
+    }
+    
+    private void removeNumber(char[][] board, int row, int col, int digit){
+        int ind = (row/3) * 3 + (col/3);
+        
+        rows[row][digit]--;
+        cols[col][digit]--;
+        boxes[ind][digit]--;
+        board[row][col] = '.';
+    }
+    
+    
+    boolean solved = false;
+    
+    private void backtrack(char[][] board, int row, int col){
+        if(row > 8 || col > 8){
+            solved = true;
+            return;
+        }
+
+        if(board[row][col] == '.'){
+            for(int digit=1;digit<10;digit++){
+                if(isValidState(row, col, digit)){
+                    placeNumber(board, row, col, digit);
+                    if(col == 8){
+                        backtrack(board, row+1, 0);    
+                    }else{
+                        backtrack(board, row, col+1);
+                    }
+                    if(solved){
+                        return;
+                    }
+                    removeNumber(board, row, col, digit);
+                }    
+            }
+        }else{
+            if(col == 8){
+                backtrack(board, row+1, 0);    
+                }else{
+                    backtrack(board, row, col+1);
+            }
+        }
+    }
+    
+    public void solveSudoku(char[][] board) {
+        for(int i=0;i<9;i++){
+            for(int j=0;j<9;j++){
+                if(board[i][j] !='.'){
+                    placeNumber(board, i, j, Character.getNumericValue(board[i][j]));
+                }
+            }
+        }
+        backtrack(board, 0,0);
+    }
+}
