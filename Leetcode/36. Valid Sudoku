@@ -1,0 +1,41 @@
+https://leetcode.com/problems/valid-sudoku
+
+class Solution {
+    
+    int[][] rows = new int[9][10];
+    int[][] cols = new int[9][10];
+    int[][] boxes = new int[9][10];
+    
+    
+    private void incrementCount(int digit, int row, int col){
+        int ind = (row/3) *3 + (col/3);
+        
+        rows[row][digit]++;
+        cols[col][digit]++;
+        boxes[ind][digit]++;
+    
+    }
+    
+    private boolean isValid(int digit, int ind){
+        return (rows[ind][digit] <=1 && cols[ind][digit] <=1 && boxes[ind][digit] <=1);
+    }
+    
+    
+    public boolean isValidSudoku(char[][] board) {
+        for(int i=0;i<9;i++){
+            for(int j=0;j<9;j++){
+                if(board[i][j] != '.'){
+                    incrementCount(Character.getNumericValue(board[i][j]), i,j);                
+                }
+            }
+        }
+        for(int i=0;i<9;i++){
+            for(int digit = 1; digit<=9;digit++){
+                if(!isValid(digit, i)){
+                    return false;
+                 }
+            }
+        }
+        return true;
+    }
+}
