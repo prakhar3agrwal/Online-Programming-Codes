@@ -1,0 +1,30 @@
+https://leetcode.com/problems/rectangle-overlap
+
+class Solution {
+    public boolean isRectangleOverlap(int[] rec1, int[] rec2) {
+        int x1Rect1 = rec1[0];
+        int y1Rect1 = rec1[1];
+        
+        int x2Rect1 = rec1[2];
+        int y2Rect1 = rec1[3];
+        
+        int x1Rect2 = rec2[0];
+        int y1Rect2 = rec2[1];
+        
+        int x2Rect2 = rec2[2];
+        int y2Rect2 = rec2[3];
+        
+        if(x2Rect1<=x1Rect2 || x2Rect2 <= x1Rect1 || y1Rect2>= y2Rect1 || y1Rect1>= y2Rect2){
+            return false;
+        }
+        //is it a line
+        
+        if(x1Rect1 == x2Rect1 ||
+          x1Rect2 == x2Rect2 ||
+          y1Rect1 == y2Rect1 ||
+          y1Rect2 == y2Rect2){
+            return false;
+        }
+        return true;
+    }
+}
