@@ -1,0 +1,80 @@
+https://leetcode.com/problems/word-search-ii
+
+class Solution {
+    
+    List<String> ans = new ArrayList<>();
+    class TrieNode{
+        HashMap<Character, TrieNode> children = new HashMap<>();
+        String word = null;
+    }
+    
+    private TrieNode constructTrie(String[] words){
+        TrieNode root = new TrieNode();
+        
+        for(String word: words){
+            TrieNode currNode = root;
+            int len = word.length();
+            for(int i=0;i<len;i++){
+                Character c= word.charAt(i);
+                if(currNode.children.containsKey(c)){
+                    currNode = currNode.children.get(c);
+                }else{
+                    TrieNode newNode = new TrieNode();
+                    currNode.children.put(c, newNode);
+                    currNode = newNode;
+                }
+            }
+            currNode.word = word;
+        }
+        
+        return root;
+    }
+    
+    private void solve(char[][]board, int row, int col, TrieNode parent){
+        Character currChar = board[row][col];
+        TrieNode currNode = parent.children.getOrDefault(currChar, null);
+        if(currNode == null){
+            return;
+        }
+        
+        if(currNode.word !=null){
+            ans.add(currNode.word);
+            currNode.word = null;
+        }
+        
+        board[row][col] = '.';
+        
+        int[] rows = {-1,0,1,0};
+        int[] cols = {0,1,0,-1};
+        
+        for(int i=0;i<4;i++){
+            int newRow = row+rows[i];
+            int newCol = col+cols[i];
+            
+            if(newRow<0 || newRow>=board.length || newCol < 0 || newCol >=board[0].length){
+                continue;
+            }
+            solve(board, newRow, newCol, currNode);
+        }
+        board[row][col] = currChar;
+        
+        if(currNode.children.isEmpty()){
+            parent.children.remove(currChar);
+        }
+    }
+    
+    public List<String> findWords(char[][] board, String[] words) {
+        TrieNode root = constructTrie(words);
+        int n = board.length;
+        int m = board[0].length;
+        
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(root.children.containsKey(board[i][j])){
+                    solve(board, i,j, root);
+                }
+            }
+        }
+        return ans;
+    }
+}
