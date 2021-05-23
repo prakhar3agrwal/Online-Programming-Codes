@@ -1,0 +1,29 @@
+https://leetcode.com/problems/count-number-of-teams
+
+class Solution {
+    public int numTeams(int[] rating) {
+        int n = rating.length;
+        int ans = 0;
+        for(int i=1;i<n-1;i++){
+            int leftLesser = 0;
+            int leftGreater = 0;
+            int rightLesser = 0;
+            int rightGreater = 0;
+            for(int j=i-1;j>=0;j--){
+                if(rating[j] > rating[i])
+                    leftGreater++;
+                else
+                    leftLesser++;
+            }
+            for(int j=i+1;j<n;j++){
+                if(rating[j] > rating[i])
+                    rightGreater++;
+                else
+                    rightLesser++;
+            }
+            ans += leftGreater*rightLesser + leftLesser*rightGreater;
+            
+        }
+        return ans;
+    }
+}
