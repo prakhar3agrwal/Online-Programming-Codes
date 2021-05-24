@@ -1,0 +1,24 @@
+https://leetcode.com/problems/paint-house-ii
+
+class Solution {
+    public int minCostII(int[][] costs) {
+        int n = costs.length;
+        int k = costs[0].length;
+        for(int i=1;i<n;i++){
+            for(int j=0;j<k;j++){
+                int minCost = Integer.MAX_VALUE;
+                for(int x = 0;x<k;x++){
+                    if(x!=j){
+                        minCost = Math.min(minCost, costs[i-1][x]);
+                    }
+                }
+                costs[i][j] += minCost;
+            }
+        }
+        int minCost = Integer.MAX_VALUE;
+        for(int i=0;i<k;i++){
+            minCost = Math.min(minCost, costs[n-1][i]);
+        }
+        return minCost;
+    }
+}
