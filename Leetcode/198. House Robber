@@ -1,0 +1,29 @@
+https://leetcode.com/problems/house-robber
+
+class Solution {
+    private int solve(int[] nums, int ind, int dp[]){
+        if(ind<0){
+            return 0;
+        }
+        if(dp[ind]!=-1){
+            return dp[ind];
+        }
+        
+        dp[ind] = Math.max(solve(nums, ind-2, dp) + nums[ind],
+                          solve(nums, ind-1,dp));
+        return dp[ind];
+        
+    }
+    public int rob(int[] nums) {
+        int n = nums.length;
+        if(n == 1){
+            return nums[0];
+        }
+        int[] dp = new int[n];
+        Arrays.fill(dp,-1);
+
+        dp[0] = nums[0];
+        solve(nums, n-1, dp);
+        return dp[n-1];
+    }
+}
