@@ -1,0 +1,74 @@
+https://leetcode.com/problems/dungeon-game
+
+
+class Solution {
+    
+    private boolean solve(int[][] dp, int minHealth){
+        dp[0][0] +=minHealth;
+        if(dp[0][0]<=0){
+            return false;
+        }        
+        int n = dp.length;
+        int m = dp[0].length;
+        
+        boolean neg = false;
+        for(int i=1;i<n;i++){
+            if(neg){
+                dp[i][0] = Integer.MIN_VALUE;
+            }else{
+                dp[i][0] += dp[i-1][0];    
+                            
+                if(dp[i][0]<=0){
+                    dp[i][0] = Integer.MIN_VALUE;
+                    neg = true;
+                }
+            }
+        }
+        
+        neg = false;
+        for(int i=1;i<m;i++){
+            if(neg){
+                dp[0][i] = Integer.MIN_VALUE;
+            }else{
+                dp[0][i] += dp[0][i-1];    
+                if(dp[0][i]<=0){
+                    dp[0][i] = Integer.MIN_VALUE;
+                    neg = true;
+                }
+            }
+        }
+        
+        for(int i=1;i<n;i++){
+            for(int j=1;j<m;j++){
+                int val = Math.max(dp[i-1][j], dp[i][j-1]);
+                if(val<=0){
+                    dp[i][j] = Integer.MIN_VALUE;
+                }else{
+                    dp[i][j]+=val;    
+                }
+            }
+        }
+        return (dp[n-1][m-1]>0);
+    }
+    public int calculateMinimumHP(int[][] dungeon) {
+        int n = dungeon.length;
+        int m = dungeon[0].length;
+        
+        int ans = Integer.MAX_VALUE;
+        int low = 1;
+        int high = 1000000;
+        
+        int mid = 0;
+        while(low<=high){
+            mid = (low+high)/2;
+            int[][] dp = Arrays.stream(dungeon).map(int[]::clone).toArray(int[][]::new);
+            if(solve(dp,mid)){
+                ans = Math.min(ans, mid);
+                high = mid-1;
+            }else{
+                low = mid+1;
+            }
+        }
+        return ans;
+    }
+}
