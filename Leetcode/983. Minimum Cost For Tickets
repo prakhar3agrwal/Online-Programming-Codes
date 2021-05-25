@@ -1,0 +1,38 @@
+https://leetcode.com/problems/minimum-cost-for-tickets
+
+
+class Solution {
+    
+    private int solve(int[] days, int[] costs, int[] dp, int ind, boolean[] allDays){
+        if(ind<0){
+            return 0;
+        }
+        if(dp[ind]!=-1){
+            return dp[ind];
+        }
+        if(allDays[ind] == false){
+            return solve(days, costs, dp, ind-1, allDays);
+        }
+        
+        int minCost = solve(days, costs, dp, ind-1, allDays)+costs[0];
+        minCost = Math.min(minCost, solve(days, costs, dp, ind-7, allDays)+costs[1]);
+        minCost = Math.min(minCost, solve(days, costs, dp, ind-30, allDays)+costs[2]);
+                    
+        
+        dp[ind] = minCost;
+        return dp[ind];
+    }
+    
+    public int mincostTickets(int[] days, int[] costs) {
+        int n = days.length;
+        int[] dp = new int[366];
+        Arrays.fill(dp, -1);
+        boolean[] allDays = new boolean[366];
+        Arrays.fill(allDays, false);
+        for(int i=0;i<n;i++){
+            allDays[days[i]]=true;
+        }
+        solve(days, costs, dp, 365, allDays);
+        return dp[days[n-1]];
+    }
+}
