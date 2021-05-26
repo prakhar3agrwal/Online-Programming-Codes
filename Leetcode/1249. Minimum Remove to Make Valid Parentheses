@@ -1,0 +1,36 @@
+https://leetcode.com/problems/minimum-remove-to-make-valid-parentheses
+
+class Solution {
+    public String minRemoveToMakeValid(String s) {
+        List<Integer> indicesToBeDeleted = new ArrayList<>();
+        
+        int n = s.length();
+        Stack<Integer> st = new Stack<>();
+        for(int i=0;i<n;i++){
+            if(s.charAt(i) == '('){
+                st.push(i);
+            }else if(s.charAt(i) == ')'){
+                if(st.isEmpty()){
+                    indicesToBeDeleted.add(i);
+                }else{
+                    st.pop();
+                }
+            }
+        }
+        while(!st.isEmpty()){
+            indicesToBeDeleted.add(st.pop());
+        }
+        
+        if(indicesToBeDeleted.size()==0){
+            return s;
+        }
+        
+        StringBuilder ans = new StringBuilder();
+        for(int i=0;i<n;i++){
+            if(!indicesToBeDeleted.contains(i)){
+                ans.append(s.charAt(i));
+            }
+        }
+        return ans.toString();
+    }
+}
