@@ -1,0 +1,129 @@
+https://leetcode.com/problems/lfu-cache
+
+
+
+/*
+1. Test for capacity 0.
+2. Remember to update the key value list, startNode and endNode lists
+*/
+
+class LFUCache {
+
+    class Node{
+        int val;
+        int counter;
+        int key;
+        
+        Node prev;
+        Node next;
+    }
+    
+    int capacity;
+    int currCt = 0;
+    Map<Integer, Node> keyValMap = new HashMap<>();
+    Map<Integer, Node> frequencyMapStartNode = new HashMap<>();
+    Map<Integer, Node> frequencyMapEndNode = new HashMap<>();
+    
+    Node dummy = new Node();
+    
+    public LFUCache(int capacity) {
+        this.capacity = capacity;
+    }
+    
+    private void removeNode(Node node){
+        node.prev.next = node.next;
+        node.next.prev = node.prev;
+    }
+    
+    private void addNode(Node head, Node node){
+        head.next.prev = node;
+        node.prev = head;
+        node.next = head.next;
+        head.next = node;
+    }
+    
+    private Node createNewList(){
+        Node head = new Node();
+        Node end = new Node();
+        
+        head.next = end;
+        end.prev = head;
+        
+        head.prev = end.next = null;
+        return head;
+    }
+
+    private Node getNewListHead(int val){
+        Node newFrequenctList = frequencyMapStartNode.get(val);
+        if(newFrequenctList == null){
+            newFrequenctList = createNewList();
+            frequencyMapStartNode.put(val, newFrequenctList);
+            frequencyMapEndNode.put(val, newFrequenctList.next);
+        }
+        return newFrequenctList;
+    }
+    
+    public int get(int key) {
+        Node temp = keyValMap.getOrDefault(key, dummy);
+        if(temp != dummy){
+            temp.counter++;
+            removeNode(temp);
+            Node newFrequenctList = getNewListHead(temp.counter);
+            addNode(newFrequenctList, temp);
+            return temp.val;
+        }else{
+            return -1;
+        }
+    }
+    
+
+    public void put(int key, int value) {
+        if(capacity == 0){
+            return;
+        }
+        Node temp = keyValMap.getOrDefault(key, dummy);
+        boolean updated = false;
+        if(currCt == capacity && temp == dummy){
+            for(Integer freq: frequencyMapStartNode.keySet()){
+                Node startNode = frequencyMapStartNode.get(freq);
+                Node endNode = frequencyMapEndNode.get(freq);
+                if(startNode.next != endNode){
+                    keyValMap.remove(endNode.prev.key);
+                    removeNode(endNode.prev);
+                    updated = true;
+                    break;
+                }
+            }
+  
+        }else{
+            currCt++;
+        }
+        
+        if(temp != dummy){
+            currCt--;
+            temp.counter++;
+            temp.val = value;
+            temp.key = key;
+            removeNode(temp);
+            Node newFrequenctList = getNewListHead(temp.counter);
+            addNode(newFrequenctList, temp);
+            keyValMap.put(key, temp);
+            return;
+        }
+
+        temp = new Node();
+        temp.val = value;
+        temp.key = key;
+        temp.counter = 1;
+        Node newFrequenctList = getNewListHead(temp.counter);
+        addNode(newFrequenctList, temp);
+        keyValMap.put(key, temp);
+    }
+}
+
+/**
+ * Your LFUCache object will be instantiated and called as such:
+ * LFUCache obj = new LFUCache(capacity);
+ * int param_1 = obj.get(key);
+ * obj.put(key,value);
+ */
