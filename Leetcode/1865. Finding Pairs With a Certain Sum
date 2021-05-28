@@ -1,0 +1,45 @@
+https://leetcode.com/problems/finding-pairs-with-a-certain-sum
+
+
+class FindSumPairs {
+
+    Map<Integer, Integer> freqNums1 = new HashMap<>();
+    Map<Integer, Integer> freqNums2 = new HashMap<>();
+    int[] nums1 = null;
+    int[] nums2 = null;
+    
+    public FindSumPairs(int[] nums1, int[] nums2) {
+        for(int num: nums1){
+            freqNums1.put(num, freqNums1.getOrDefault(num,0)+1);
+        }
+        
+        for(int num: nums2){
+            freqNums2.put(num, freqNums2.getOrDefault(num,0)+1);
+        }
+        this.nums1 = nums1;
+        this.nums2 = nums2;
+    }
+    
+    public void add(int index, int val) {
+        int oldVal = nums2[index];
+        freqNums2.put(oldVal, freqNums2.get(oldVal)-1);
+        
+        nums2[index] += val;
+        freqNums2.put(nums2[index], freqNums2.getOrDefault(nums2[index],0)+1);
+    }
+    
+    public int count(int tot) {
+        int ans = 0;
+        for(int num: freqNums1.keySet()){
+            ans = ans + freqNums1.get(num) * freqNums2.getOrDefault(tot-num,0);
+        }
+        return ans;
+    }
+}
+
+/**
+ * Your FindSumPairs object will be instantiated and called as such:
+ * FindSumPairs obj = new FindSumPairs(nums1, nums2);
+ * obj.add(index,val);
+ * int param_2 = obj.count(tot);
+ */
