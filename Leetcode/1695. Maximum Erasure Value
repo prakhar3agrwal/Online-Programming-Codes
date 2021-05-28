@@ -1,0 +1,30 @@
+https://leetcode.com/problems/maximum-erasure-value
+
+class Solution {
+    public int maximumUniqueSubarray(int[] nums) {
+        int n = nums.length;
+        int ans = nums[0];
+        Map<Integer, Integer> mp = new HashMap<>();
+        int left = 0;
+        int right = 1;
+        mp.put(nums[0],1);
+        int currSum = ans;
+        while(right<n){
+            if(mp.containsKey(nums[right])){
+                while(nums[left]!= nums[right]){
+                    mp.remove(nums[left]);
+                    currSum -= nums[left];
+                    left++;
+                }
+                mp.remove(nums[left]);
+                currSum -= nums[left];
+                left++;
+            }
+            mp.put(nums[right],1);
+            currSum += nums[right];
+            ans = Math.max(ans, currSum);
+            right++;
+        }
+        return ans;
+    }
+}
