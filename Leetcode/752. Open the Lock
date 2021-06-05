@@ -1,0 +1,39 @@
+https://leetcode.com/problems/open-the-lock
+
+class Solution {
+
+    public int openLock(String[] deadends, String target) {
+        Set<String> obstacles = new HashSet<>();
+        Set<String> seen = new HashSet<>();
+        for(String str: deadends){
+            obstacles.add(str);
+        }
+        
+        Queue<Pair<String,Integer>> q = new LinkedList<>();
+        q.add(new Pair("0000", 0));
+        
+        while(!q.isEmpty()){
+            Pair<String,Integer> currPair = q.poll();
+            String currNode = currPair.getKey();
+            if(seen.contains(currNode) || obstacles.contains(currNode)){
+                continue;
+            }
+            if(currNode.equals(target)){
+                return currPair.getValue();
+            }
+            seen.add(currNode);
+            for(int i=0;i<4;i++){
+                int x = currNode.charAt(i)-48;
+                
+                int newVal = (x+1)%10;
+                String node = currNode.substring(0,i) + newVal + currNode.substring(i+1);
+                q.add(new Pair(node, currPair.getValue()+1));
+                
+                newVal = (x-1+10)%10;
+                node = currNode.substring(0,i) + newVal + currNode.substring(i+1);
+                q.add(new Pair(node, currPair.getValue()+1));
+            }
+        }
+        return -1;
+    }
+}
