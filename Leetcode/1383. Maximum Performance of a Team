@@ -1,0 +1,32 @@
+https://leetcode.com/problems/maximum-performance-of-a-team/
+
+class Solution {
+    public int maxPerformance(int n, int[] speed, int[] efficiency, int k) {
+        List<Pair<Integer, Integer>> arr = new ArrayList<>();
+        
+        for(int i=0;i<n;i++){
+            arr.add(new Pair(efficiency[i], speed[i]));
+        }
+        
+        Collections.sort(arr, (a,b)->{
+           if(a.getKey()==b.getKey()){
+               return b.getValue()-a.getValue();
+           } 
+            return b.getKey() - a.getKey();
+        });
+        
+        PriorityQueue<Integer> pq = new  PriorityQueue<>();
+        
+        long sum = 0, ans =0;
+        for(Pair<Integer,Integer> pair: arr){
+            if(pq.size()>k-1){
+                sum -= pq.poll();    
+            }
+            pq.add(pair.getValue());
+            sum += pair.getValue();
+            
+            ans = Math.max(ans, sum*pair.getKey());
+        }
+        return (int)(ans % 1000000007);
+    }
+}
