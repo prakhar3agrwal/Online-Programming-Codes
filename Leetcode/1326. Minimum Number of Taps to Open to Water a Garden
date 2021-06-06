@@ -1,0 +1,44 @@
+https://leetcode.com/problems/minimum-number-of-taps-to-open-to-water-a-garden
+
+
+class Solution {
+    public int minTaps(int n, int[] ranges) {
+        
+        int[] intervals = new int[n+1];
+        
+        for(int i=0;i<=n;i++){
+            intervals[Math.max(0, i-ranges[i])] = Math.max(intervals[Math.max(0, i-ranges[i])],Math.min(n, i+ranges[i]));
+        }
+        
+        
+        int ans = 1;
+        if(intervals[0] ==0){
+            return -1;
+        }
+        int rightBoundaryCovered = intervals[0];
+        
+        for(int i=1;i<=n;i++){
+            if(rightBoundaryCovered == n){
+                return ans;
+            }
+            if(rightBoundaryCovered < i){
+                return -1;
+            }
+            int currMax = intervals[i];
+            while(rightBoundaryCovered>=i){
+                currMax = Math.max(currMax, intervals[i]);
+                i++;
+            }
+            //missed this decrement statement and faced multiple WA's
+            i--;
+            ans++;
+            if(currMax>rightBoundaryCovered){
+                rightBoundaryCovered = currMax;    
+            }
+            
+        }
+    
+        return ans;
+        
+    }
+}
