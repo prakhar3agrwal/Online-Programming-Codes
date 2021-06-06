@@ -1,0 +1,31 @@
+https://leetcode.com/problems/jump-game-ii
+
+class Solution {
+    public int jump(int[] nums) {
+        int n = nums.length;
+        if(n < 2){
+            return 0;
+        }
+        int ans = 1;
+
+        int rightBoundaryCovered = nums[0];
+        
+        for(int i=1;i<n;i++){
+            if(rightBoundaryCovered >= n-1){
+                return ans;
+            }
+            int currMax = i+ nums[i];
+            while(rightBoundaryCovered>=i){
+                currMax = Math.max(currMax, i+nums[i]);
+                i++;
+            }
+            //missed this decrement statement and faced multiple WA's
+            i--;
+            ans++;
+            if(currMax>rightBoundaryCovered){
+                rightBoundaryCovered = currMax;    
+            }
+        }
+        return ans;
+    }
+}
