@@ -1,0 +1,45 @@
+https://leetcode.com/problems/video-stitching
+
+class Solution {
+    public int videoStitching(int[][] clips, int time) {
+        int n = clips.length;
+    
+        Arrays.sort(clips, (a,b)->{
+            if(a[0]==b[0]){
+                return b[1]-a[1];
+            }
+            return a[0]-b[0];
+        });
+        
+        if(clips[0][0] >0){
+            return -1;
+        }
+        
+        int rightBoundary = clips[0][1];
+        
+        int ans = 1;
+        for(int i=1;i<n;i++){
+            if(rightBoundary >= time){
+                return ans;
+            }
+            
+            if(rightBoundary<clips[i][0]){
+                return -1;
+            }
+            int currMax = clips[i][1];
+            while(i<n && rightBoundary>=clips[i][0]){
+                currMax = Math.max(currMax, clips[i][1]);
+                i++;
+            }
+            i--;
+            ans++;
+            if(rightBoundary<currMax){
+                rightBoundary = currMax;
+            }
+        }
+        if(rightBoundary<time){
+            ans = -1;
+        }
+        return ans;
+    }
+}
