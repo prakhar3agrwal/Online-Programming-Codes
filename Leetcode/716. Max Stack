@@ -1,0 +1,119 @@
+https://leetcode.com/problems/max-stack/
+
+
+class MaxStack {
+
+    /** initialize your data structure here. */
+    
+    
+    class Node{
+        int val;
+        Node prev;
+        Node next;
+        
+        Node(int val){
+            this.val = val;
+        }
+    }
+    
+    TreeMap <Integer, List<Node>> mp =null;
+    DoubleLinkedList dll = null;
+    
+    
+    class DoubleLinkedList{
+        Node head, tail;
+        
+        DoubleLinkedList(){
+            head = new Node(0);
+            tail = new Node(0);
+            head.next = tail;
+            tail.prev = head;
+        }
+        
+        
+        Node push(int val){
+            Node node = new Node(val);
+            node.next = head.next;
+            node.prev = head;
+            head.next = node;
+            node.next.prev = node;
+            return node;
+        }
+        
+        Node pop(){
+            Node node = head.next;
+            int val = node.val;
+            head.next = head.next.next;
+            head.next.prev = head;
+            return node;
+        }
+        
+        int peek(){
+            return head.next.val;
+        }
+        
+        void delete(Node node){
+            node.prev.next = node.next;
+            node.next.prev = node.prev;
+        }
+
+    }
+    
+    
+    public MaxStack() {
+        mp =  new TreeMap<>();
+        dll = new DoubleLinkedList();
+    }
+    
+    public void push(int x) {
+        Node node = dll.push(x);
+        List<Node> list = mp.getOrDefault(x, new ArrayList<Node>());
+        list.add(node);
+        mp.put(x, list);
+    }
+    
+    public int pop() {
+        Node node = dll.pop();
+        int val = node.val;
+        List<Node> list = mp.getOrDefault(node.val, new ArrayList<Node>());
+        list.remove(list.size()-1);
+        if(list.isEmpty()){
+            mp.remove(val);
+        }else{
+            mp.put(val, list);    
+        }
+        return node.val;
+    }
+    
+    public int top() {
+        return dll.peek();
+    }
+    
+    public int peekMax() {
+        return mp.lastKey();
+    }
+    
+    public int popMax() {
+        int maxValKey = mp.lastKey();
+        List<Node> list = mp.get(maxValKey);
+        Node node = list.get(list.size()-1);
+        list.remove(list.size()-1);
+        dll.delete(node);
+        if(list.isEmpty()){
+            mp.remove(maxValKey);
+        }else{
+            mp.put(maxValKey, list);
+        }
+        return node.val;
+    }
+}
+
+/**
+ * Your MaxStack object will be instantiated and called as such:
+ * MaxStack obj = new MaxStack();
+ * obj.push(x);
+ * int param_2 = obj.pop();
+ * int param_3 = obj.top();
+ * int param_4 = obj.peekMax();
+ * int param_5 = obj.popMax();
+ */
