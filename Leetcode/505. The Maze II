@@ -1,0 +1,54 @@
+https://leetcode.com/problems/the-maze-ii
+
+
+class Solution {
+    
+    int[][] dp = null;
+    int[] rowOffset = {1,-1,0,0};
+    int[] colOffset = {0,0,1,-1};
+    
+    private boolean isValid(int[][] maze, int row, int col){
+        int n = maze.length;
+        int m = maze[0].length;
+        
+        if(row>=0 &&  row<n && col >=0 && col<m){
+            return true;
+        }
+        return false;
+    }
+    
+    private void dfs(int[][] maze, int[] start, int row, int col){
+    
+        for(int i=0;i<4;i++){
+            int x = rowOffset[i] + row;
+            int y = colOffset[i] + col;
+            
+            int dist = 0;
+            while(isValid(maze, x,y) && maze[x][y] == 0){
+                dist++;
+                x += rowOffset[i];
+                y += colOffset[i];
+            }
+            
+            x -= rowOffset[i];
+            y -= colOffset[i];
+            if(dp[x][y] > dp[row][col] + dist){
+                dp[x][y] = dp[row][col] + dist;
+                
+                dfs(maze, start, x,y);
+            }
+            
+        }
+    }
+    
+    public int shortestDistance(int[][] maze, int[] start, int[] destination) {
+        dp = new int[maze.length][maze[0].length];
+        for(int i=0;i<maze.length; i++){
+            Arrays.fill(dp[i], Integer.MAX_VALUE);    
+        }
+        dp[start[0]][start[1]] = 0;
+        dfs(maze, start, start[0], start[1]);
+            
+        return dp[destination[0]][destination[1]] == Integer.MAX_VALUE ? -1: dp[destination[0]][destination[1]];
+    }
+}
