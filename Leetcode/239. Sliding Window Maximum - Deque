@@ -1,0 +1,32 @@
+https://leetcode.com/problems/sliding-window-maximum
+
+
+
+class Solution {
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        int len = nums.length;
+        int[] ans = new int[len-k+1];
+
+        Deque<Integer> dq = new LinkedList<>();
+        
+        for(int i=0;i<len;i++){
+            while(dq.peekFirst()!=null && dq.peekFirst()<=i-k){
+                dq.pollFirst();
+            }
+            
+            if(i>=k-1){
+                ans[i-(k-1)] = nums[i];
+                if(dq.peekFirst()!=null){
+                    ans[i-(k-1)] = Math.max(nums[i],nums[dq.peekFirst()]);        
+                }
+            }
+            
+            
+            while(dq.peekLast() !=null && nums[i]>nums[dq.peekLast()]){
+                dq.pollLast();
+            }
+            dq.offerLast(i);
+        }
+        return ans;
+    }
+}
