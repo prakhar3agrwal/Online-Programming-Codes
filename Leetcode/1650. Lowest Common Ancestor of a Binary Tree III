@@ -1,0 +1,30 @@
+https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-iii/
+
+
+/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public Node left;
+    public Node right;
+    public Node parent;
+};
+*/
+
+class Solution {
+    
+    
+    public Node lowestCommonAncestor(Node p, Node q) {
+        
+        Set<Node> s = new HashSet<>();
+        while(p!= null){
+            s.add(p);
+            p = p.parent;
+        }
+        
+        while(!s.contains(q)){
+            q = q.parent;
+        }
+        return q;
+    }
+}
