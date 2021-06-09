@@ -1,0 +1,50 @@
+https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree
+
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    
+    TreeNode ans = null;
+    
+    private boolean solve(TreeNode root, TreeNode p, TreeNode q){
+        if(root == null){
+            return false;
+        }    
+        boolean left = solve(root.left, p, q);
+        boolean right = solve(root.right,p,q);
+        boolean currNodeValid = false;
+        
+        if(root ==p || root == q){
+            currNodeValid = true;
+        }
+        
+        if(left == true && right == true){
+            if(ans == null){
+                ans = root;
+            }
+            return true;
+        }
+        
+        if((left || right) && currNodeValid){
+            if(ans == null){
+                ans = root;
+            }
+            return true;
+        }
+        
+        return (left || right || currNodeValid);
+    }
+    
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        solve(root, p, q);
+        return ans;
+    }
+}
