@@ -1,0 +1,28 @@
+https://leetcode.com/problems/jump-game-vi
+
+class Solution {
+    public int maxResult(int[] nums, int k) {
+        int n = nums.length;
+        int[] dp = new int[n];
+        
+        dp[0] = nums[0];
+        Deque<Integer> dq = new LinkedList<>();
+        dq.offerLast(0);
+        
+        for(int i=1;i<n;i++){
+            while(dq.peekFirst()!=null && dq.peekFirst()<i-k){
+                dq.pollFirst();
+            }
+            
+            dp[i] = nums[i] + dp[dq.peekFirst()];
+            
+            while(dq.peekLast() !=null && dp[i]>dp[dq.peekLast()]){
+                dq.pollLast();
+            }
+            dq.offerLast(i);
+        }
+        
+        
+        return dp[n-1];
+    }
+}
