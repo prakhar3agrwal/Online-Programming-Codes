@@ -1,0 +1,28 @@
+https://leetcode.com/problems/jump-game-iii
+
+class Solution {
+    
+    Set<Integer> visited = new HashSet<>();
+    boolean ans = false;
+    private void solve(int[] arr, int currIndex){
+        if(arr[currIndex] == 0){
+            ans = true;
+            return;
+        }
+        if(visited.contains(currIndex)){
+            return;
+        }
+        visited.add(currIndex);
+        if(currIndex + arr[currIndex]<arr.length){
+            solve(arr, currIndex+arr[currIndex]);
+        }
+        if(currIndex - arr[currIndex]>=0){
+            solve(arr, currIndex-arr[currIndex]);
+        }
+        
+    }
+    public boolean canReach(int[] arr, int start) {
+        solve(arr, start);
+        return ans;
+    }
+}
