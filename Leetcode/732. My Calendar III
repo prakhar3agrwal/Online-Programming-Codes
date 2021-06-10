@@ -1,0 +1,29 @@
+https://leetcode.com/problems/my-calendar-iii
+
+
+class MyCalendarThree {
+
+    TreeMap<Integer, Integer> calender;
+    public MyCalendarThree() {
+        calender = new TreeMap<>();
+    }
+    
+    public int book(int start, int end) {
+        int ans = 0;
+        int currMax = 0;
+        calender.put(start, calender.getOrDefault(start,0)+1);
+        calender.put(end, calender.getOrDefault(end,0)-1);
+        
+        for(Integer i: calender.values()){
+            currMax +=i;
+            ans = Math.max(currMax, ans);
+        }
+        return ans;
+    }
+}
+
+/**
+ * Your MyCalendarThree object will be instantiated and called as such:
+ * MyCalendarThree obj = new MyCalendarThree();
+ * int param_1 = obj.book(start,end);
+ */
