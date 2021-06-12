@@ -1,0 +1,52 @@
+https://leetcode.com/problems/minimum-number-of-refueling-stops/
+
+class Solution {
+    
+    PriorityQueue<Integer> pq = new PriorityQueue(Collections.reverseOrder());
+    
+    public int minRefuelStops(int target, int startFuel, int[][] stations) {
+        int n = stations.length;
+        
+        int ans = 0;
+        int currFuel = startFuel;
+        int lastCoordinate = 0;
+        for(int i=0;i<n;i++){
+            currFuel -= (stations[i][0]-lastCoordinate);
+            if(currFuel >= 0){
+                pq.add(stations[i][1]);
+            }else{
+                if(currFuel < 0){
+                    while(!pq.isEmpty()){
+                        currFuel += pq.poll();
+                        ans++;
+                        if(currFuel>=0){
+                            break;
+                        }
+                    }
+                }
+                if(currFuel<0){
+                    return -1;
+                }
+                pq.add(stations[i][1]);
+            }
+            lastCoordinate = stations[i][0];
+        }
+        currFuel -= (target-lastCoordinate);
+        
+        if(currFuel <0){
+            while(!pq.isEmpty()){
+                currFuel += pq.poll();
+                ans++;
+                if(currFuel>=0){
+                    break;
+                }
+            }    
+        }
+        if(currFuel>=0){
+            return ans;
+        }else{
+            return -1;
+        }
+        
+    }
+}
