@@ -1,0 +1,56 @@
+https://leetcode.com/problems/maximum-number-of-removable-characters
+
+
+
+class Solution {
+    
+    int[] invalid = null;
+    int[] removable = null;
+    private boolean isSubsequence(String s, String p){
+        int n =s.length();
+        int m = p.length();
+        
+        int i=0,j=0;
+        
+        while(i<n && j<m){
+            if(invalid[i] == 1){
+                i++;
+                continue;
+            }
+            if(s.charAt(i) == p.charAt(j)){
+                j++;
+            }
+            i++;
+        }
+        return j==m;
+    }
+    
+    public int maximumRemovals(String s, String p, int[] removable) {
+        this.removable = removable;
+        int n = s.length();
+        invalid = new int[n];
+        
+        int low = 0;
+        int high = removable.length-1;
+        int ans = 0;
+        int mid = -1;
+        while(low<=high){
+            mid = (low+high)/2;
+            
+            for(int i=0;i<=mid;i++){
+                invalid[removable[i]] = 1;
+            }
+            
+            if(isSubsequence(s,p)){
+                ans = Math.max(ans, mid+1);
+                low = mid+1;
+            }else{
+                high = mid-1;
+            }  
+            for(int i=0;i<=mid;i++){
+                invalid[removable[i]] = 0;
+            }
+        }
+        return ans;
+    }
+}
