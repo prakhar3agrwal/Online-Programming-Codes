@@ -1,0 +1,76 @@
+https://leetcode.com/problems/reorder-list
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    
+    private ListNode reverse(ListNode head){
+        ListNode curr = head;
+        ListNode prev = null;
+        
+        while(curr!=null){
+            ListNode temp = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = temp;
+        }
+        return prev;
+    }
+    
+    
+    
+    private ListNode findMiddle(ListNode head){
+        ListNode slow = head;
+        ListNode fast = head;
+        
+        while(fast.next != null && fast.next.next != null){
+            slow = slow.next;
+            fast = fast.next;
+            fast = fast.next;
+        }
+        return slow;
+    }
+    
+    public void reorderList(ListNode head) {
+        if(head == null || head.next == null || head.next.next == null){
+            return;
+        }
+        
+        ListNode middle = findMiddle(head);
+        ListNode reverseHead = reverse(middle.next);
+        middle.next= null;
+        
+        ListNode temp1 = head.next;
+        ListNode temp2 = reverseHead;
+        ListNode updatedList = head;
+        ListNode updatedListTemp = updatedList;
+        while(temp1 != null && temp2!=null){
+            
+            updatedListTemp.next = temp2;
+            temp2 = temp2.next;
+            updatedListTemp = updatedListTemp.next;
+            
+            updatedListTemp.next = temp1;
+            temp1 = temp1.next;
+            updatedListTemp = updatedListTemp.next;
+        }
+        
+        if(temp2!=null){
+            temp1 = temp2;
+        }
+        while(temp1!=null){
+            updatedListTemp.next = temp1;
+            updatedListTemp = updatedListTemp.next;
+            temp1 = temp1.next;
+        }
+        head = updatedList;
+    }
+}
