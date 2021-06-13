@@ -1,0 +1,28 @@
+https://leetcode.com/problems/cutting-ribbons
+
+class Solution {
+    
+    private int solve(int[] ribbons, int len){
+        int ct = 0;
+        for(int ribbon: ribbons){
+            ct += (ribbon/len);
+        }
+        return ct;
+    }
+    
+    public int maxLength(int[] ribbons, int k) {
+        int low = 1, high = 100000;
+        int ans = 0;
+        while(low<=high){
+            int mid = (low+high)/2;
+            
+            if(solve(ribbons, mid)>=k){
+                ans = Math.max(ans, mid);
+                low = mid+1;
+            }else{
+                high = mid-1;
+            }
+        }
+        return ans;
+    }
+}
