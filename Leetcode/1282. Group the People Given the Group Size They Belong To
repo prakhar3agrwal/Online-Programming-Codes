@@ -1,0 +1,38 @@
+https://leetcode.com/problems/group-the-people-given-the-group-size-they-belong-to/
+
+class Solution {
+    
+    private List<List<Integer>> getGroups(List<Integer> people, int grpSize){
+        List<List<Integer>> ans = new ArrayList<>();
+        int n = people.size()/grpSize;
+        int i=0;
+        while(n>0){
+            n--;
+            List<Integer> temp = new ArrayList<>();
+            for(int j=0;j<grpSize;j++){
+                temp.add(people.get(i+j));
+            }
+            i+=grpSize;
+            ans.add(temp);
+        }
+        return ans;
+        
+    }
+    
+    public List<List<Integer>> groupThePeople(int[] groupSizes) {
+        TreeMap<Integer, List<Integer>> mp = new TreeMap<>();
+        int n = groupSizes.length;
+        
+        List<List<Integer>> ans = new ArrayList<>();
+        for(int i=0;i<n;i++){
+            List<Integer> list =  mp.getOrDefault(groupSizes[i], new ArrayList<>());
+            list.add(i);
+            mp.put(groupSizes[i],list);
+        }
+        
+        for(Integer i: mp.keySet()){
+            ans.addAll(getGroups(mp.get(i), i));
+        }
+        return ans;
+    }
+}
