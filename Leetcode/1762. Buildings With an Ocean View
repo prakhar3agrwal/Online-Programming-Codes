@@ -1,0 +1,21 @@
+https://leetcode.com/problems/buildings-with-an-ocean-view
+
+class Solution {
+    public int[] findBuildings(int[] heights) {
+        List<Integer>ans = new ArrayList<>();
+        int n = heights.length;
+        ans.add(n-1);
+        int min = heights[n-1];
+        for(int i=n-2;i>=0;i--){
+            if(min<heights[i]){
+                ans.add(i);
+            }
+            min = Math.max(min, heights[i]);
+        }
+        
+        Collections.sort(ans);
+        int[] array = ans.stream().mapToInt(i->i).toArray();
+        return array;
+        
+    }
+}
