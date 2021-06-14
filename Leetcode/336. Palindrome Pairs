@@ -1,0 +1,70 @@
+https://leetcode.com/problems/palindrome-pairs
+
+class Solution {
+    
+    private List<String> getValidPrefixes(String word){
+        List<String> list = new ArrayList<>();
+        for(int i=0;i<word.length();i++){
+            if(isPalindrome(word, i, word.length()-1)){
+                list.add(word.substring(0,i));
+            }
+        }
+        return list;
+    }
+    
+    private List<String> getValidSuffixes(String word){
+        List<String> list = new ArrayList<>();
+        for(int i=0;i<word.length();i++){
+            if(isPalindrome(word, 0, i)){
+                list.add(word.substring(i+1));
+            }
+        }
+        return list;
+    }
+    
+    private boolean isPalindrome(String word, int start, int end){
+        while(start<end){
+            if(word.charAt(start)!=word.charAt(end)){
+                return false;
+            }
+            start++;
+            end--;
+        }
+        return true;
+    }
+    public List<List<Integer>> palindromePairs(String[] words) {
+        Map<String, Integer> mp = new HashMap<>();
+        int n = words.length;
+        for(int i=0;i<n;i++){
+            mp.put(words[i],i);
+        }
+        
+        List<List<Integer>> ans = new ArrayList<>();
+        for(int i=0;i<n;i++){
+            //case 1
+            String currWord = words[i];
+            String reverseWord = new StringBuilder(currWord).reverse().toString();
+            if(mp.containsKey(reverseWord) && i!= mp.get(reverseWord)){
+                ans.add(Arrays.asList(i, mp.get(reverseWord)));
+            }
+            
+            //case 2
+            for(String prefix: getValidPrefixes(currWord)){
+                reverseWord = new StringBuilder(prefix).reverse().toString();
+                if(mp.containsKey(reverseWord)){
+                    ans.add(Arrays.asList(i,mp.get(reverseWord)));   
+                }
+            }
+                
+            //case 3
+            for(String suffix: getValidSuffixes(currWord)){
+                reverseWord = new StringBuilder(suffix).reverse().toString();
+                if(mp.containsKey(reverseWord) && i!= mp.get(reverseWord)){
+                    ans.add(Arrays.asList(mp.get(reverseWord),i));
+                }    
+            }
+        }
+        return ans;
+            
+    }
+}
