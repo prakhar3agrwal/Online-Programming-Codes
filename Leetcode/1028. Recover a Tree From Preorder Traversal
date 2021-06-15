@@ -1,0 +1,74 @@
+https://leetcode.com/problems/recover-a-tree-from-preorder-traversal
+
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    
+    class Node{
+        int val; 
+        int level;
+        String str;
+    }
+    
+    private Node parseString(String traversal){
+        int level = 0;
+        int i=0;
+        while(traversal.charAt(i) == '-'){
+            level++;
+            i++;
+        }
+
+        
+        int n = traversal.length();
+        int val =0;
+        while(i<n && traversal.charAt(i)!='-'){
+            val = val *10 + traversal.charAt(i)-'0';
+            i++;
+        }
+        
+        Node node = new Node();
+        node.val = val;
+        node.level = level;
+        node.str = traversal.substring(i);
+        return node;
+        
+    } 
+    public TreeNode recoverFromPreorder(String traversal) {
+        Map<Integer, TreeNode> mp = new HashMap<>();
+        int n = traversal.length();
+
+        while(traversal.length()>0){
+            Node node = parseString(traversal);
+            int currLevel = node.level;
+            int currVal = node.val;
+            traversal = node.str;
+            TreeNode treeNode = new TreeNode(currVal);
+            if(!mp.containsKey(currLevel-1)){
+                mp.put(currLevel, treeNode);
+                continue;
+            }
+            TreeNode parent = mp.get(currLevel-1);
+            if(parent.left == null){
+                parent.left = treeNode;
+            }else{
+                parent.right = treeNode;
+            }
+            mp.put(currLevel, treeNode);
+        }
+        return mp.get(0);
+    }
+}
