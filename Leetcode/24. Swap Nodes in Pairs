@@ -12,9 +12,6 @@ https://leetcode.com/problems/swap-nodes-in-pairs
  */
 class Solution {
     public ListNode swapPairs(ListNode head) {
-        if(null == head || null == head.next){
-            return head;
-        }
         ListNode dummy = new ListNode();
         dummy.next = head;
         ListNode temp = dummy;
