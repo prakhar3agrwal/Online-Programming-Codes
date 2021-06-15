@@ -1,0 +1,52 @@
+https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix
+
+class Solution {
+    class HeapNode{
+        int val;
+        int row;
+        int col;
+        
+        public HeapNode(int val, int row, int col){
+            this.val = val;
+            this.row = row;
+            this.col = col;
+        }
+        
+        public int getVal(){
+            return val;
+        }
+        
+        public int getRow(){
+            return row;
+        }
+        
+        public int getCol(){
+            return col;
+        }
+    }
+    
+    
+    public int kthSmallest(int[][] matrix, int k) {
+        int n = matrix.length;
+        PriorityQueue<HeapNode> pq = new PriorityQueue<>(Math.min(n,k), (a,b)->a.getVal()-b.getVal());
+        
+        int ans = -1;
+        for(int i=0;i<Math.min(n,k);i++){
+            pq.offer(new HeapNode(matrix[i][0],i,0));
+        }
+        
+        while(k>0){
+            HeapNode element = pq.poll();
+            ans = element.getVal();
+            
+            int col = element.getCol();
+            if(col<n-1){
+                int row = element.getRow();
+                pq.offer(new HeapNode(matrix[row][col+1],row,col+1));
+            }
+            k--;
+        }
+        return ans;
+        
+    }
+}
