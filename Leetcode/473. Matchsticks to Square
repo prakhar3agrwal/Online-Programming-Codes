@@ -1,0 +1,53 @@
+https://leetcode.com/problems/matchsticks-to-square
+
+class Solution {
+    
+    int[] sum = new int[4];
+    int[] nums = null;
+    long sideLength = 0;
+    
+    private boolean isValidCombination(int index){
+        if(index == nums.length){
+            return (sum[0] == sum[1]) && (sum[1] == sum[2]) && (sum[2] == sum[3]);
+        }
+        
+        int currElement = nums[index];
+        for(int i=0;i<4;i++){
+            if(sum[i]+currElement >sideLength){
+                continue;
+            }
+            sum[i] += currElement;
+            if(isValidCombination(index+1)){
+                return true;
+            }
+            sum[i] -= currElement;
+        }
+        return false;
+    }
+    
+    public boolean makesquare(int[] matchsticks) {
+        int n = matchsticks.length;
+        long sum = 0;
+        Map<Integer, Integer> mp = new HashMap<>();
+        int maxLength = -1;
+        for(int i=0;i<n;i++){
+            sum += matchsticks[i];
+            maxLength = Math.max(maxLength, matchsticks[i]);
+            mp.put(matchsticks[i], mp.getOrDefault(matchsticks[i],0)+1);
+        }
+        long lengthOfOneSide = sum/4;
+        if(sum%4 !=0 || maxLength>lengthOfOneSide){
+            return false;
+        }
+        sideLength = lengthOfOneSide;
+        Arrays.sort(matchsticks);
+        
+        nums = matchsticks;
+        for(int i=0;i<n/2;i++){
+            int temp = nums[i];
+            nums[i] = nums[n-1-i];
+            nums[n-1-i] = temp;
+        }
+        return isValidCombination(0);
+    }
+}
