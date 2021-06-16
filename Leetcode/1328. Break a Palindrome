@@ -1,0 +1,31 @@
+https://leetcode.com/problems/break-a-palindrome
+
+
+class Solution {
+    public String breakPalindrome(String palindrome) {
+        int n = palindrome.length();
+        if(n==1){
+            return "";
+        }
+        StringBuilder ans = new StringBuilder();
+        String firstHalf = palindrome.substring(0,n/2);
+        String secondHalf = palindrome.substring(n/2);
+        int i = 0;
+        for(i=0;i<n/2;i++){
+            if(firstHalf.charAt(i) != 'a'){
+                break;    
+            }
+        }
+        if(i==n/2){
+            ans.append(firstHalf);
+            ans.append(secondHalf.substring(0, secondHalf.length()-1));
+            ans.append("b");
+        }else{
+            ans.append(firstHalf.substring(0,i));
+            ans.append("a");
+            ans.append(firstHalf.substring(i+1));
+            ans.append(secondHalf);
+        }
+        return ans.toString();
+    }
+}
