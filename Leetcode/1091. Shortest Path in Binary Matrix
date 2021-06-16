@@ -1,0 +1,68 @@
+https://leetcode.com/problems/shortest-path-in-binary-matrix
+
+class Solution {
+    
+    class Node{
+        int row;
+        int col;
+        int dist;
+        
+        Node(int row, int col, int dist){
+            this.row = row;
+            this.col = col;
+            this.dist = dist;
+        }
+    }
+    
+    int[] rowOffset = {-1,-1,-1,0,0,1,1,1};
+    int[] colOffset = {-1,0,1,-1,1,-1,0,1};
+    
+    boolean isValid(int row, int col, int n){
+        if(row <0 || row>=n || col<0 || col>=n){
+            return false;
+        }
+        return true;
+    }
+    
+    public int shortestPathBinaryMatrix(int[][] grid) {
+        int n = grid.length;
+        if(grid[0][0] !=0 || grid[n-1][n-1]!=0){
+            return -1;
+        }
+        if(n==1){
+            return 1;
+        }
+        
+        Queue<Node> q = new LinkedList<>();
+        q.offer(new Node(0,0,1));
+        int ans = 0;
+        while(!q.isEmpty()){
+            Node currNode = q.poll();
+            int currRow = currNode.row;
+            int currCol = currNode.col;
+            int currDist = currNode.dist;
+            
+            int newRow =0;
+            int newCol=0;
+            for(int i=0;i<8;i++){
+                newRow = currRow + rowOffset[i];
+                newCol = currCol + colOffset[i];
+                int newDist = currDist+1;
+                
+                if(isValid(newRow, newCol,n) && grid[newRow][newCol] == 0){
+                    if(newRow == n-1 && newCol == n-1){
+                        ans = newDist;
+                        break;
+                    }else{
+                        q.offer(new Node(newRow, newCol, newDist));
+                        grid[newRow][newCol] =1;
+                    }
+                }
+            }
+            if(newRow == n-1 && newCol == n-1){
+                break;
+            }
+        }
+        return ans==0?-1:ans;
+    }
+}
