@@ -1,0 +1,22 @@
+https://leetcode.com/problems/total-hamming-distance
+
+class Solution {
+    public int totalHammingDistance(int[] nums) {
+        
+        int n = nums.length;
+        int ans = 0;
+        
+        long two = 1;
+        for(int i=0;i<32;i++){
+            long setBits = 0;
+            for(int j=0;j<n;j++){
+                if((nums[j]&two)==two){
+                    setBits++;
+                }
+            }
+            ans += (int)(setBits)*(n-setBits);
+            two <<=1;
+        }
+        return ans;
+    }
+}
