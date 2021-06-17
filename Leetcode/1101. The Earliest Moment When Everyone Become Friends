@@ -1,0 +1,49 @@
+https://leetcode.com/problems/the-earliest-moment-when-everyone-become-friends
+
+class Solution {
+    
+    int[] parent = null;
+    private int find(int a){
+        int root = a;
+        while(root!=parent[root]){
+            root =parent[root];
+        }
+        return root;
+    }
+                           
+    private void union(int a, int b){
+        int parentA = find(a);
+        int parentB = find(b);
+        
+        parent[parentA] = parentB;
+    }
+    public int earliestAcq(int[][] logs, int N) {
+        Arrays.sort(logs, (a,b)->{
+           return a[0]-b[0]; 
+        });
+        
+        parent = new int[N];
+        for(int i=0;i<N;i++){
+            parent[i]=i;
+        }
+        int n = logs.length;
+        int ans = 0;
+        for(int i=0;i<n;i++){
+            int time = logs[i][0];
+            int a = logs[i][1];
+            int b = logs[i][2];
+            if(find(a) != find(b)){
+                ans = time;
+                union(a,b);
+            }
+        }
+        
+        int parentA = find(0);
+        for(int i=1;i<N;i++){
+            if(find(i)!=parentA){
+                return -1;
+            }
+        }
+        return ans;
+    }
+}
