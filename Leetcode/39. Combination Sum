@@ -1,0 +1,28 @@
+https://leetcode.com/problems/combination-sum
+
+class Solution {
+    
+    Set<List<Integer>> set = new HashSet<>();
+    private void solve(int[] candidates, int currIndex, LinkedList<Integer> currComb, int currTarget){
+        if(0 == currTarget){
+            set.add(new ArrayList<Integer>(currComb));
+            return;
+        }
+        
+        for(int i = currIndex; i<candidates.length; i++){
+            if(candidates[i]>currTarget){
+                break;
+            }
+            currComb.addLast(candidates[i]);
+            solve(candidates, i, currComb, currTarget-candidates[i]);
+            currComb.removeLast();
+        }
+    }
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        Arrays.sort(candidates);
+        solve(candidates,0,new LinkedList<>(), target);
+        List<List<Integer>> ans = new ArrayList<>();
+        ans.addAll(set);
+        return ans;
+    }
+}
