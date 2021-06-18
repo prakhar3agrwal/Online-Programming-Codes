@@ -1,0 +1,59 @@
+https://leetcode.com/problems/range-sum-query-mutable
+
+class NumArray {
+
+    int[] nums;
+    int[] sum;
+    int blockLen = 0;
+    int len = 0;
+    public NumArray(int[] nums) {
+        this.nums = nums;
+        this.len = nums.length;
+        
+        this.blockLen = (int)Math.ceil(Math.sqrt(len));
+        len = (int)Math.ceil((double)nums.length/blockLen);
+        sum = new int[len];
+        for(int i=0;i<nums.length;i++){
+            sum[i/blockLen] += nums[i];
+        }
+    }
+    
+    public void update(int index, int val) {
+        int newIndex = index/blockLen;
+        sum[newIndex] = sum[newIndex]-nums[index] +val;
+        nums[index] = val;
+    }
+    
+    public int sumRange(int left, int right) {
+        int leftBlock = left/blockLen;
+        int rightBlock = right/blockLen;
+        int ans = 0;
+        if(leftBlock == rightBlock){
+            for(int i=left;i<=right;i++){
+                ans += nums[i];
+            }
+            return ans;
+        }
+        
+        int leftBlockRightBoundary = blockLen*(leftBlock+1)-1;
+        int rightBlockLeftBoundary = (blockLen*rightBlock);
+        
+        for(int i=left;i<=leftBlockRightBoundary;i++){
+            ans += nums[i];
+        }
+        for(int i=leftBlock+1;i<=rightBlock-1;i++){
+            ans += sum[i];
+        }
+        for(int i=rightBlockLeftBoundary;i<=right;i++){
+            ans += nums[i];
+        }
+        return ans;
+    }
+}
+
+/**
+ * Your NumArray object will be instantiated and called as such:
+ * NumArray obj = new NumArray(nums);
+ * obj.update(index,val);
+ * int param_2 = obj.sumRange(left,right);
+ */
