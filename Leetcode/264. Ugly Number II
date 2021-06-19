@@ -1,0 +1,30 @@
+https://leetcode.com/problems/ugly-number-ii
+
+class Solution {
+    public int nthUglyNumber(int n) {
+        List<Integer> ans = new ArrayList<>();
+        ans.add(1);
+        int i2 = 0, i3 = 0, i5 = 0;
+        
+        while(ans.size()<n){
+            int twoMultiplier = ans.get(i2)*2;
+            int threeMultiplier = ans.get(i3)*3;
+            int fiveMultiplier = ans.get(i5)*5;
+            
+            
+            int minVal = Math.min(threeMultiplier, Math.min(twoMultiplier, fiveMultiplier));
+            if(minVal == twoMultiplier){
+                i2++;
+            }else if(minVal == threeMultiplier){
+                i3++;
+            }else{
+                i5++;
+            }
+            if(ans.get(ans.size()-1)!=minVal){
+                ans.add(minVal);    
+            }
+            
+        }
+        return ans.get(n-1);
+    }
+}
