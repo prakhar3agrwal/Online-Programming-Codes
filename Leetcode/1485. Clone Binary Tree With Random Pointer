@@ -1,0 +1,53 @@
+https://leetcode.com/problems/clone-binary-tree-with-random-pointer
+
+/**
+ * Definition for Node.
+ * public class Node {
+ *     int val;
+ *     Node left;
+ *     Node right;
+ *     Node random;
+ *     Node() {}
+ *     Node(int val) { this.val = val; }
+ *     Node(int val, Node left, Node right, Node random) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *         this.random = random;
+ *     }
+ * }
+ */
+
+class Solution {
+    
+    Map<Node, NodeCopy> mp = new HashMap<>();
+    
+    private NodeCopy solve(Node root){
+        if(root == null){
+            return null;        
+        }
+        
+        NodeCopy node = new NodeCopy(root.val);
+        node.left = solve(root.left);
+        node.right = solve(root.right);
+        mp.put(root,node);
+        return node;
+    }
+    
+    private void connect(Node root){
+        if(root == null){
+            return;
+        }
+        
+        if(root.random!=null){
+            mp.get(root).random = mp.get(root.random);
+        }
+        connect(root.left);
+        connect(root.right);
+    }
+    public NodeCopy copyRandomBinaryTree(Node root) {
+        NodeCopy ans = solve(root);
+        connect(root);
+        return ans;
+    }
+}
