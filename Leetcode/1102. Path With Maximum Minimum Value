@@ -1,0 +1,61 @@
+https://leetcode.com/problems/path-with-maximum-minimum-value
+
+class Solution {
+        
+    int[] rowOffset = {1,-1,0,0};
+    int[] colOffset = {0,0,-1,1};
+    boolean[][] visited = null;
+    
+    int ans = Integer.MIN_VALUE;
+    
+    private boolean isValid(int n, int m, int row, int col){
+        if(row<0 || row>=n || col<0 | col>=m || visited[row][col] ==true ){
+            return false;
+        }
+        return true;
+    }
+    
+    private boolean dfs(int[][] grid, int row, int col, int currMin){
+        if(grid[row][col]<currMin){
+            return false;
+        }
+        int n = grid.length;  
+        int m = grid[0].length;  
+        if(row == n-1 && col == m-1){
+            return true;
+        }
+        
+        visited[row][col] = true;
+        for(int i=0;i<4;i++){
+            int newRow = row + rowOffset[i];
+            int newCol = col + colOffset[i];
+            if(isValid(n, m,newRow, newCol) && grid[newRow][newCol]>=currMin){
+                if(dfs(grid, newRow, newCol, currMin)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
+    
+    public int maximumMinimumPath(int[][] grid) {
+        int n = grid.length;
+        int m = grid[0].length;
+
+        int low = 0;
+        int high = 1000000000;
+        while(low<=high){
+            int mid = (low+high)/2;
+            
+            visited = new boolean[n][m];
+            if(dfs(grid,0,0, mid)){
+                ans = Math.max(ans, mid);
+                low = mid+1;
+            }else{
+                high = mid-1;
+            }
+        }
+        return ans;
+    }
+}
