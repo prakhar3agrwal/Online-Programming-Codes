@@ -1,0 +1,42 @@
+https://leetcode.com/problems/minimum-absolute-difference-queries
+
+class Solution {
+    public int[] minDifference(int[] nums, int[][] queries) {
+        int n = nums.length;
+         
+        int[][] dp = new int [n+1][101];
+        
+        for(int i=0;i<n+1;i++){
+            Arrays.fill(dp[i],0);
+        }
+        
+        for(int i=1;i<=n;i++){
+            for(int j=1;j<101;j++){
+                dp[i][j] = dp[i-1][j];
+            }
+            dp[i][nums[i-1]]++;
+        }
+        n = queries.length;
+        int[] ans = new int[n];
+        
+        for(int i=0;i<n;i++){
+            int minDiff = Integer.MAX_VALUE;
+            int right = queries[i][1];
+            int left = queries[i][0];
+            
+            int prevElement = Integer.MAX_VALUE;
+            for(int j=1;j<=100;j++){
+                if(dp[right+1][j] - dp[left][j]>0){
+                    if(prevElement!=Integer.MAX_VALUE){
+                        minDiff = Math.min(minDiff, j-prevElement);
+                        prevElement = j;
+                    }else{
+                        prevElement = j;
+                    }
+                }
+            }
+            ans[i] = minDiff!=Integer.MAX_VALUE?minDiff:-1;
+        }
+        return ans;
+    }
+}
