@@ -1,0 +1,78 @@
+https://leetcode.com/problems/shortest-path-to-get-food
+
+class Solution {
+    
+    class Node{
+        int row;
+        int col;
+        int dist;
+        
+        Node(int row, int col, int dist){
+            this.row = row;
+            this.col = col;
+            this.dist = dist;
+        }
+    }
+    
+    char[][] grid = null;
+    int n=-1,m=-1;
+    
+    int[] rowOffset = {1,-1,0,0};
+    int[] colOffset = {0,0,-1,1};
+    
+    private boolean isValid(int row, int col){
+        if(row<0 || row>=n || col<0 || col>=m || grid[row][col] == 'X'){
+            return false;
+        }    
+        return true;
+    }
+    
+    public int getFood(char[][] grid) {
+        Queue<Node> q = new LinkedList<>();
+        int n = grid.length;
+        int m = grid[0].length;
+        this.grid = grid;
+        this.n = n;
+        this.m = m;
+        
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(grid[i][j] == '*'){
+                    q.offer(new Node(i,j,0));
+                    break;
+                }
+            }
+            if(q.size()>0){
+                break;
+            }
+        }
+        
+        while(!q.isEmpty()){
+            Node node = q.poll();
+            int currRow = node.row;
+            int currCol = node.col;
+            int currDist = node.dist;
+            
+            if(grid[currRow][currCol] == '#'){
+                return currDist;
+            }
+            
+            
+            for(int i=0;i<4;i++){
+                int newRow = currRow + rowOffset[i];
+                int newCol = currCol + colOffset[i];
+                int newDist = currDist + 1;
+                if(isValid(newRow, newCol)){
+                    if(grid[newRow][newCol] == '#'){
+                        return newDist;
+                    }
+                    grid[newRow][newCol] = 'X'; 
+                    q.offer(new Node(newRow, newCol, newDist));
+                    
+                }
+            }
+        }
+        return -1;
+        
+    }
+}
