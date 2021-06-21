@@ -1,0 +1,24 @@
+https://leetcode.com/problems/count-number-of-homogenous-substrings/
+
+class Solution {
+    public int countHomogenous(String s) {
+        int ans = 0;
+        int len = s.length();
+        long mod = 1000000007;
+        long curr = 1;
+        for(int i=1;i<len;i++){
+            if(s.charAt(i) == s.charAt(i-1)){
+                curr++;
+            }
+            else{
+                curr = ((curr * (curr+1))/2)%mod;
+                ans = (int)((ans + curr)%mod);
+                curr = 1;
+            }
+        }
+        curr = ((curr * (curr+1))/2)%mod;
+        ans = (int)((ans + curr)%mod);
+        
+        return ans;
+    }
+}
