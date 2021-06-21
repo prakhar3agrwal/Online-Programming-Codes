@@ -1,0 +1,24 @@
+https://leetcode.com/problems/number-of-substrings-with-only-1s
+
+class Solution {
+    public int numSub(String s) {
+        int ans = 0;
+        int len = s.length();
+        long mod = 1000000007;
+        long curr = 0;
+        for(int i=0;i<len;i++){
+            if(s.charAt(i) == '1'){
+                curr++;
+            }
+            else{
+                curr = ((curr * (curr+1))/2)%mod;
+                ans = (int)((ans + curr)%mod);
+                curr = 0;
+            }
+        }
+        curr = ((curr * (curr+1))/2)%mod;
+        ans = (int)((ans + curr)%mod);
+        
+        return ans;
+    }
+}
