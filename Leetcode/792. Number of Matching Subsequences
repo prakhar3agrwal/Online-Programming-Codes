@@ -1,0 +1,59 @@
+https://leetcode.com/problems/number-of-matching-subsequences/
+
+class Solution {
+    
+    
+    Map<Character, List<Integer>> mp = new HashMap<>();
+    public int numMatchingSubseq(String s, String[] words) {
+        int len = s.length();
+        
+        for(int i=0;i<len;i++){
+            List<Integer> list = mp.getOrDefault(s.charAt(i), new ArrayList<>());
+            list.add(i);
+            mp.put(s.charAt(i), list);
+        }
+        
+        for(Character c: mp.keySet()){
+            List<Integer> list = mp.get(c);
+            Collections.sort(list);
+            mp.put(c, list);
+        }
+        
+        int ans = 0;
+        int n = words.length;
+        
+        for(int i=0;i<n;i++){
+            len = words[i].length();
+            if(!mp.containsKey(words[i].charAt(0))){
+                continue;
+            }
+            int lastIndex = mp.get(words[i].charAt(0)).get(0);
+            int j = 0;
+            for(j=1;j<len;j++){
+                if(!mp.containsKey(words[i].charAt(j))){
+                    break;
+                }
+                List<Integer> list = mp.get(words[i].charAt(j));
+                int index = Collections.binarySearch(list, lastIndex);
+                if(index>=0){
+                    if(index == list.size()-1){
+                        break;
+                    }else{
+                        lastIndex = list.get(index+1);
+                    }
+                }else{
+                    index = -(index+1);
+                    if(index == list.size()){
+                        break;
+                    }else{
+                        lastIndex = list.get(index);
+                    }
+                }
+            }
+            if(j==len){
+                ans++;
+            }
+        }
+        return ans;
+    }
+}
