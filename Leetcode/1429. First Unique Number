@@ -1,0 +1,50 @@
+https://leetcode.com/problems/first-unique-number/
+
+class FirstUnique {
+
+    Set<Integer> whiteList = new LinkedHashSet<>();
+    Set<Integer> blackList = new HashSet<>();
+    
+    public FirstUnique(int[] nums) {
+        int n = nums.length;
+        for(int i=0;i<n;i++){
+            if(blackList.contains(nums[i])){
+                continue;
+            }
+            if(whiteList.contains(nums[i])){
+                blackList.add(nums[i]);
+                whiteList.remove(nums[i]);
+            }else{
+                whiteList.add(nums[i]);
+            }
+        }
+    }
+    
+    public int showFirstUnique() {
+        Iterator<Integer> iter = whiteList.iterator();
+        if(iter!=null && iter.hasNext()){
+            return iter.next();    
+        }
+        return -1;
+    }
+    
+    public void add(int value) {
+        
+        if(blackList.contains(value)){
+            return;
+        }
+        if(whiteList.contains(value)){
+            blackList.add(value);
+            whiteList.remove(value);
+        }else{
+             whiteList.add(value);
+        } 
+    }
+}
+
+/**
+ * Your FirstUnique object will be instantiated and called as such:
+ * FirstUnique obj = new FirstUnique(nums);
+ * int param_1 = obj.showFirstUnique();
+ * obj.add(value);
+ */
