@@ -1,0 +1,53 @@
+https://leetcode.com/problems/median-of-two-sorted-arrays/
+
+class Solution {
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        if(nums1.length > nums2.length){
+            return findMedianSortedArrays(nums2, nums1);
+        }
+        int n = nums1.length;
+        int m = nums2.length;
+        
+        if(n==0){
+            if(m==0){
+                return 0;
+            }
+            if(m%2==0){
+                return ((double)(nums2[m/2]) + (double)(nums2[(m-1)/2]))/2.0;
+            }
+            return nums2[m/2];
+        }
+        int low = 0;
+        int high = n-1;
+        double ans = 0.0;
+        while(true){
+            int firstArrayIndex = ((low+high)/2.0<0.0)?-1:(low+high)/2;
+            int secondArrayIndex = (m+n+1)/2 - firstArrayIndex-1;
+            
+            int firstArrayLeftElement = firstArrayIndex<0 || firstArrayIndex>=n?Integer.MIN_VALUE: nums1[firstArrayIndex];
+            int firstArrayRightElement = firstArrayIndex+1>=n?Integer.MAX_VALUE: nums1[firstArrayIndex+1];
+            
+            
+            int secondArrayLeftElement = secondArrayIndex-1<0 || secondArrayIndex-1>=m?Integer.MIN_VALUE: nums2[secondArrayIndex-1];
+            int secondArrayRightElement = secondArrayIndex>=m?Integer.MAX_VALUE: nums2[secondArrayIndex];
+            
+            
+            if(firstArrayLeftElement<=secondArrayRightElement && secondArrayLeftElement<=firstArrayRightElement){
+                if((m+n)%2==0){
+                    ans = ((double)Math.max(firstArrayLeftElement,secondArrayLeftElement) +
+                        (double)Math.min(firstArrayRightElement,secondArrayRightElement))/2.0;
+                    
+                }else{
+                    return Math.max(firstArrayLeftElement,secondArrayLeftElement);
+                }
+                break;
+            }
+            else if(firstArrayLeftElement>secondArrayRightElement){
+                high = firstArrayIndex-1;
+            }else if(secondArrayLeftElement>firstArrayRightElement){
+                low = firstArrayIndex+1;
+            }
+        }
+        return ans;
+    }
+}
