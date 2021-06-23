@@ -1,0 +1,30 @@
+https://leetcode.com/problems/4sum-ii/
+
+class Solution {
+    
+    public int fourSumCount(int[] nums1, int[] nums2, int[] nums3, int[] nums4) {
+        int n = nums1.length;
+        if(n==0){
+            return 0;
+        }
+        Map<Integer,Integer> list1 = new HashMap<>();
+        Map<Integer,Integer> list2 = new HashMap<>();
+        
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                int val = nums1[i] + nums2[j];
+                list1.put(val, list1.getOrDefault(val,0)+1);
+                
+                val = nums3[i] + nums4[j];
+                list2.put(-val, list2.getOrDefault(-val,0)+1);
+            }
+        }
+        int ans = 0;
+        for(Integer val: list1.keySet()){
+            int freq1 = list1.get(val);
+            int freq2 = list2.getOrDefault(val,0);
+            ans += freq1*freq2;
+        }
+        return ans;
+    }
+}
