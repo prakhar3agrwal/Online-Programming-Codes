@@ -1,0 +1,37 @@
+https://leetcode.com/problems/shuffle-an-array
+
+class Solution {
+
+    int[] nums = null;
+    int[] shuffledArray = null;
+    Random rand = new Random();
+    public Solution(int[] nums) {
+        this.nums = nums;
+        this.shuffledArray = nums.clone();
+    }
+    
+    /** Resets the array to its original configuration and return it. */
+    public int[] reset() {
+        this.shuffledArray = this.nums.clone();
+        return this.shuffledArray;
+    }
+    
+    /** Returns a random shuffling of the array. */
+    public int[] shuffle() {
+        int n = shuffledArray.length;
+        for(int i=0;i<n;i++){
+            int idx = rand.nextInt(n-i);
+            int val = shuffledArray[idx];
+            shuffledArray[idx] = shuffledArray[n-1-i];
+            shuffledArray[n-1-i] = val;
+        }
+        return this.shuffledArray;
+    }
+}
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * Solution obj = new Solution(nums);
+ * int[] param_1 = obj.reset();
+ * int[] param_2 = obj.shuffle();
+ */
