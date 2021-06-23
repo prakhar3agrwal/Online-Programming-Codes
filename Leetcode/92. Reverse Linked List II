@@ -1,0 +1,53 @@
+https://leetcode.com/problems/reverse-linked-list-ii
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    
+    private ListNode reverse(ListNode start, ListNode end){
+        ListNode curr = start;
+        ListNode prev = null;
+        
+        while(prev!=end){
+            ListNode temp = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = temp;
+        }
+        return prev;
+    }
+    
+    public ListNode reverseBetween(ListNode head, int left, int right) {
+        if(null == head || head.next == null || left == right){
+            return head;
+        }
+        ListNode dummy = new ListNode();
+        dummy.next = head;
+        ListNode start = dummy;
+        for(int i=0;i<left-1;i++){
+            start = start.next;
+        }
+        ListNode startPtr = start.next;
+        ListNode end = dummy;
+
+        for(int i=0;i<right;i++){
+             end = end.next;
+        }    
+        ListNode endPtr = end.next;
+        reverse(startPtr, end);
+        
+        start.next = end;
+        startPtr.next = endPtr;
+        
+        return dummy.next;
+        
+    }
+}
