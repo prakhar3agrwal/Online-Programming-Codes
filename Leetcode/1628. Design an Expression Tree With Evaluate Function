@@ -1,0 +1,87 @@
+https://leetcode.com/problems/design-an-expression-tree-with-evaluate-function
+
+/**
+ * This is the interface for the expression tree Node.
+ * You should not remove it, and you can define some classes to implement it.
+ */
+
+abstract class Node {
+    public abstract int evaluate();
+    // define your fields here
+};
+
+
+/**
+ * This is the TreeBuilder class.
+ * You can treat it as the driver code that takes the postinfix input 
+ * and returns the expression tree represnting it as a Node.
+ */
+
+class TreeBuilder {
+    Node buildTree(String[] postfix) {
+        MyNode node = new MyNode(postfix);
+        return node;
+    }
+};
+
+class MyNode extends Node{
+    public String[] postfix = null;
+    
+    MyNode(String[] postfix){
+        this.postfix = postfix;
+    }
+    
+    private int getVal(String val){
+        int numericalVal = Integer.MAX_VALUE;
+        try{
+            numericalVal = Integer.parseInt(val);
+        }catch(NumberFormatException e){
+            
+        }
+        return numericalVal;
+    }
+    
+    private int getResult(int val1, int val2, String operator){
+        int result = 0;
+        if(operator.equals("+")){
+            return val1+val2;
+        }
+        if(operator.equals("-")){
+            return val1-val2;
+        }
+        if(operator.equals("*")){
+            return val1*val2;
+        }
+        if(operator.equals("/")){
+            return val1/val2;
+        }
+        return result;
+    }
+    public int evaluate(){
+        Stack<String> s = new Stack<>();
+        int len = postfix.length;
+        int i = 0;
+        s.push(postfix[i++]);
+        while(i<len && !s.isEmpty()){
+            String currVal = postfix[i++];
+            int currNumbericalVal = getVal(currVal);
+            if(currNumbericalVal != Integer.MAX_VALUE){
+                s.push(currVal);
+                continue;
+            }
+            int secondVal = Integer.parseInt(s.pop());
+            int firstVal = Integer.parseInt(s.pop());
+            int result = getResult(firstVal, secondVal, currVal);
+            s.push(Integer.toString(result));
+        }
+        return Integer.parseInt(s.pop());
+    }
+}
+
+
+/**
+ * Your TreeBuilder object will be instantiated and called as such:
+ * TreeBuilder obj = new TreeBuilder();
+ * Node expTree = obj.buildTree(postfix);
+ * int ans = expTree.evaluate();
+ */
