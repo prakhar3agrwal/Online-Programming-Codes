@@ -1,0 +1,36 @@
+https://leetcode.com/problems/search-in-a-sorted-array-of-unknown-size
+
+/**
+ * // This is ArrayReader's API interface.
+ * // You should not implement it, or speculate about its implementation
+ * interface ArrayReader {
+ *     public int get(int index) {}
+ * }
+ */
+
+class Solution {
+    public int search(ArrayReader reader, int target) {
+        long index = 1;
+        while(true){
+            if(reader.get((int)index)>=target){
+                break;
+            }
+            index *=2;
+        }
+        long low = 0;
+        long high = index;
+        
+        while(low<=high){
+            long mid = (low+high)/2;
+            int val = reader.get((int)mid);
+            if(val==target){
+                return (int)mid;
+            }else if(val>target){
+                high = mid-1;
+            }else{
+                low = mid+1;
+            }
+        }
+        return -1;
+    }
+}
