@@ -1,0 +1,36 @@
+https://leetcode.com/problems/next-permutation
+
+class Solution {
+    private void swap(int[] nums, int i1, int i2){
+        int temp = nums[i1];
+        nums[i1]=nums[i2];
+        nums[i2]=temp;
+    }
+    private void reverseArray(int[] nums, int start, int end){
+        while(start<end){
+            swap(nums,start,end);
+            start++;
+            end--;
+        }
+    }
+    public void nextPermutation(int[] nums) {
+        int n = nums.length;
+        int i = n-2;
+        while(i>=0 && nums[i+1] <= nums[i]){
+            i--;
+        }
+        if(i<0){
+            reverseArray(nums,0,n-1);
+            return;
+        }
+        
+        int currMin = nums[i];
+        int j = i+1;
+        while(j<n && nums[j]>nums[i]){
+            j++;
+        }
+        
+        swap(nums, i,j-1);
+        reverseArray(nums,i+1,n-1);
+    }
+}
