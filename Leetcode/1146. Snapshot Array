@@ -1,0 +1,48 @@
+https://leetcode.com/problems/snapshot-array
+
+class SnapshotArray {
+
+    Map<Integer, Set<Integer>> snapsIndices = new TreeMap<>();
+    Map<Integer, HashMap<Integer,Integer>> snaps = new TreeMap<>();
+    int latestSnap = 0;
+    
+    public SnapshotArray(int length) {
+    }
+    
+    public void set(int index, int val) {
+        HashMap<Integer,Integer> map  = snaps.getOrDefault(latestSnap, new HashMap<>());
+        map.put(index, val);
+        snaps.put(latestSnap, map);
+        
+        Set<Integer> set = snapsIndices.getOrDefault(latestSnap, new HashSet<>());
+        set.add(index);
+        snapsIndices.put(latestSnap, set);
+    }
+    
+    public int snap() {
+        latestSnap++;
+        return latestSnap-1;
+    }
+    
+    public int get(int index, int snap_id) {
+        int ans = 0;
+        while(snap_id>=0){
+            Set<Integer> set = snapsIndices.getOrDefault(snap_id, new HashSet<>());           
+            if(set.contains(index)){
+                HashMap<Integer,Integer> map = snaps.getOrDefault(snap_id, new HashMap<>());
+                ans = map.getOrDefault(index, 0);
+                return ans;
+            }
+            snap_id--;
+        }
+        return ans;
+    }
+}
+
+/**
+ * Your SnapshotArray object will be instantiated and called as such:
+ * SnapshotArray obj = new SnapshotArray(length);
+ * obj.set(index,val);
+ * int param_2 = obj.snap();
+ * int param_3 = obj.get(index,snap_id);
+ */
