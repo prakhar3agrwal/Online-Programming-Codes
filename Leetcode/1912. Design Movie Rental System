@@ -1,0 +1,117 @@
+https://leetcode.com/problems/design-movie-rental-system/
+
+
+class MovieRentingSystem {
+
+    class Node extends Object{
+        int movieId;
+        int shopId;
+        int price;
+        
+        Node(int shopId, int movieId, int price){
+            this.shopId = shopId;
+            this.movieId = movieId;
+            this.price = price;
+        }
+        
+    }
+    
+    class RentedMovieComparator implements Comparator<Node> {
+        public int compare(Node node1, Node node2)
+        {
+            if(node1.price != node2.price){
+                return node1.price - (node2.price);
+            }
+            if(node1.shopId != node2.shopId){
+                return node1.shopId - (node2.shopId);
+            }
+            return node1.movieId - (node2.movieId);
+        }
+    }
+ 
+    class MovieComparator implements Comparator<Node> {
+        public int compare(Node node1, Node node2)
+        {
+            if(node1.price != node2.price){
+                return node1.price - (node2.price);
+            }
+            return node1.shopId - (node2.shopId);
+        }
+    }
+    
+    Map<Integer, SortedSet<Node>>map = new HashMap<>();
+    
+    Map<String, Node>globalMap = new HashMap<>();    
+    
+    SortedSet<Node> rented = new TreeSet<>(new RentedMovieComparator());
+
+
+    public MovieRentingSystem(int n, int[][] entries) {
+        n = entries.length;
+        for(int i=0;i<n;i++){
+            Node node = new Node(entries[i][0], entries[i][1], entries[i][2]);
+            SortedSet<Node> set = map.getOrDefault(entries[i][1], new TreeSet<Node>(new MovieComparator()));
+            set.add(node);
+            map.put(entries[i][1], set);
+            globalMap.put(Integer.toString(node.shopId) + " " + Integer.toString(node.movieId), node);
+        }
+    }
+    
+    public List<Integer> search(int movie) {
+        List<Integer> list = new ArrayList<>();
+        if(!map.containsKey(movie)){
+            return list;
+        }
+        
+        SortedSet<Node> set = map.get(movie);
+        Iterator it = set.iterator();
+        int i = 0;
+        while(i<5 && it.hasNext()){
+            Node node = (Node)it.next();
+            list.add(node.shopId);
+            i++;
+        }
+        return list;
+    }
+
+    public void rent(int shop, int movie) {
+        Node node = globalMap.get(Integer.toString(shop) + " " + Integer.toString(movie));
+        rented.add(node);
+        SortedSet<Node> set = map.get(movie);
+        set.remove(node);
+        map.put(movie,set);
+    }
+    
+    public void drop(int shop, int movie) {
+        Node node = globalMap.get(Integer.toString(shop) + " " + Integer.toString(movie));
+        rented.remove(node);
+        SortedSet<Node> set = map.get(movie);
+        set.add(node);
+        map.put(movie,set);
+    }
+    
+    public List<List<Integer>> report() {
+        List<List<Integer>> list = new ArrayList<>();
+
+        Iterator it = rented.iterator();
+        int i = 0;
+        while(i<5 && it.hasNext()){
+            Node node = (Node)it.next();
+            List<Integer> ans = new ArrayList<>();
+            ans.add(node.shopId);
+            ans.add(node.movieId);
+            list.add(ans);
+            i++;
+        }
+        return list;
+    }
+}
+
+/**
+ * Your MovieRentingSystem object will be instantiated and called as such:
+ * MovieRentingSystem obj = new MovieRentingSystem(n, entries);
+ * List<Integer> param_1 = obj.search(movie);
+ * obj.rent(shop,movie);
+ * obj.drop(shop,movie);
+ * List<List<Integer>> param_4 = obj.report();
+ */
