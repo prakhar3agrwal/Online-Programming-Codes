@@ -1,0 +1,36 @@
+https://leetcode.com/problems/max-consecutive-ones-ii
+
+class Solution {
+    public int findMaxConsecutiveOnes(int[] nums) {
+        int ans = 0;
+        int len = nums.length;
+        int k = 1;
+        int left = 0;
+        int right = 0;
+        int currZeros = 0;
+        int curLength = 0;
+        while(left<len && right<len){
+            if(nums[right] == 1){
+                right++;
+                curLength++;
+            }else{
+                if(currZeros < k){
+                    currZeros++;
+                    right++;
+                    curLength++;
+                }else{
+                    while(currZeros>=k){
+                        if(nums[left] == 0){
+                            currZeros--;
+                        }
+                        left++;
+                        curLength--;
+                    }
+                }
+            }
+            ans = Math.max(ans, curLength);
+        }
+        return ans;
+        
+    }
+}
