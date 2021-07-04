@@ -1,0 +1,19 @@
+https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii
+
+class Solution {
+    public int maxProfit(int[] prices) {
+        int n = prices.length;
+        int[][] dp = new int[n+1][3];
+        int ans = 0;
+        
+        for(int j=1;j<=2;j++){
+            int maxDiff = -prices[0];
+            for(int i=1;i<=n;i++){
+                
+                dp[i][j] = Math.max(dp[i-1][j], maxDiff+prices[i-1]);
+                maxDiff = Math.max(maxDiff, dp[i][j-1]-prices[i-1]);
+            }
+        }
+        return Math.max(dp[n][2], dp[n][1]);
+    }
+}
