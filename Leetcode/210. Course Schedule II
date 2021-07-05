@@ -1,0 +1,56 @@
+https://leetcode.com/problems/course-schedule-ii/
+
+class Solution {
+
+    Map<Integer, List<Integer>> graph = new HashMap<>();
+    Stack<Integer> stack = new Stack<>();
+    Set<Integer> visited = new HashSet<>();
+    boolean isCyclic = false;
+    
+    private void constructGraph(int[][] prerequisites){
+        int n = prerequisites.length;
+        for(int i=0;i<n;i++){
+            int source = prerequisites[i][0];
+            int dest = prerequisites[i][1];
+            List<Integer> list = graph.getOrDefault(dest, new ArrayList<>());
+            list.add(source);
+            graph.put(dest, list);
+        }
+    }
+    
+    private void dfs(int currCourse, Set<Integer> parents){
+        visited.add(currCourse);
+        parents.add(currCourse);
+        List<Integer> children = graph.getOrDefault(currCourse, new ArrayList<>());
+        
+        for(Integer child: children){
+            if(parents.contains(child)){
+                isCyclic = true;
+                return;
+            }
+            if(!visited.contains(child)){
+                dfs(child, parents);
+            }
+        }
+        stack.push(currCourse);
+        parents.remove(currCourse);
+    }
+    
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        int[] ans = new int[numCourses];
+        constructGraph(prerequisites);
+        for(int i=0;i<numCourses;i++){
+            if(!visited.contains(i)){
+                Set<Integer> parents = new HashSet();
+                dfs(i, parents);
+            }
+        }
+        if(isCyclic == true){
+            return new int[]{};
+        }
+        for(int i=0;i<numCourses;i++){
+            ans[i] = stack.pop();
+        }
+        return ans;
+    }
+}
