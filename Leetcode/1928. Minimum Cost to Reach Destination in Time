@@ -1,0 +1,51 @@
+https://leetcode.com/problems/minimum-cost-to-reach-destination-in-time/
+
+class Solution {
+    int maxVal = 1000000000;
+    public int minCost(int maxTime, int[][] edges, int[] passingFees) {
+        Map<Integer, List<Pair<Integer,Integer>>> graph = new HashMap<>();
+        int n = passingFees.length;
+        int m = edges.length;
+        for(int i=0;i<m;i++){
+            int node1 = edges[i][0];
+            int node2 = edges[i][1];
+            int len = edges[i][2];
+            List<Pair<Integer,Integer>> list = graph.getOrDefault(node1, new ArrayList<>());
+            list.add(new Pair(node2, len));
+            graph.put(node1, list);
+            
+            list = graph.getOrDefault(node2, new ArrayList<>());
+            list.add(new Pair(node1, len));
+            graph.put(node2, list);
+            
+        }
+
+        int[][] dp = new int[maxTime+1][1001];
+        for(int i=0;i<=maxTime;i++){
+            Arrays.fill(dp[i], maxVal);
+        }
+        
+        dp[0][0] = passingFees[0];
+        for(int t=0;t<=maxTime;t++){
+            for(int i=0;i<n;i++){
+                List<Pair<Integer,Integer>> list = graph.getOrDefault(i, new ArrayList());
+                for(Pair<Integer,Integer> pair: list){
+                    int t2 = t + pair.getValue();
+                    int node = pair.getKey();
+                    if(t2 <= maxTime){
+                        dp[t2][node] = Math.min(dp[t2][node],  passingFees[node] + dp[t][i]);
+                    }
+                }
+            }
+        }
+        
+        int ans = maxVal;
+        for(int i=0;i<=maxTime;i++){
+            ans = Math.min(ans, dp[i][n-1]);
+        }
+        if(ans >=  maxVal){
+            ans = -1;
+        }
+        return ans;
+    }
+}
