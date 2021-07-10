@@ -1,0 +1,26 @@
+https://leetcode.com/problems/minimum-difference-between-largest-and-smallest-value-in-three-moves
+
+class Solution {
+    public int minDifference(int[] nums) {
+        int n = nums.length;
+        if(n<5){
+            return 0;
+        }
+        Arrays.sort(nums);
+        int ans = Integer.MAX_VALUE;
+        
+        int left  = 0;
+        int right = n-4;
+        int i = 0;
+        while(i<4){
+            ans = Math.min(ans,nums[right]-nums[left]);
+            left++;
+            right++;
+            i++;
+        }
+        return ans;
+    }
+}
+
+//0 1 1 4 6 6 6 
+//0 1 5 10 14
