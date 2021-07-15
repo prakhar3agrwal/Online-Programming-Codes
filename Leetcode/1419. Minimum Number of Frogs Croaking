@@ -1,0 +1,43 @@
+https://leetcode.com/problems/minimum-number-of-frogs-croaking
+
+class Solution {
+    int[] freq = new int[5];
+    Map<Character, Integer> map = Map.of(
+        'c', 0,
+        'r', 1,
+        'o', 2,
+        'a', 3,
+        'k', 4);
+    
+    private boolean isValid(){
+        for(int i=1;i<5;i++){
+            if(freq[i]>freq[i-1]){
+                return false;
+            }
+        }
+        return true;
+    }
+    public int minNumberOfFrogs(String s) {
+        int len = s.length();
+        if(len%5!=0){
+            return -1;
+        }
+        int ans = 0;
+        for(int i=0;i<len;i++){
+            freq[map.get(s.charAt(i))]++;
+            if(!isValid()){
+                return -1;
+            }
+            int minFreq = Arrays.stream(freq).min().getAsInt();
+            int maxFreq = Arrays.stream(freq).max().getAsInt();
+            ans = Math.max(ans, maxFreq-minFreq);
+            
+        }
+        for(int i=0;i<5;i++){
+            if(freq[i] != len/5){
+                return -1;
+            }
+        }
+        return ans;
+    }
+}
