@@ -1,0 +1,25 @@
+https://leetcode.com/problems/range-addition/
+
+class Solution {
+    int[] freq;
+    public int[] getModifiedArray(int length, int[][] updates) {
+        freq = new int[length];
+        int len = updates.length;
+        
+        for(int i=0;i<len;i++){
+            int left = updates[i][0];
+            int right = updates[i][1];
+            int val = updates[i][2];
+            
+            freq[left] += val;
+            if(right != length-1){
+                freq[right+1] -=val;
+            }
+        }
+        
+        for(int i=1;i<length;i++){
+            freq[i] += freq[i-1];
+        }
+        return freq;
+    }
+}
