@@ -1,0 +1,63 @@
+https://leetcode.com/problems/4sum
+
+class Solution {
+    class Node{
+        int x;
+        int y;
+        int sum = 0;
+        
+        Node(int x, int y, int sum){
+            this.x = x;
+            this.y = y;
+            this.sum = sum;
+        }
+        
+        public boolean equals(Object obj){
+            if(this == obj){
+                return true;
+            }
+            Node object = (Node)obj;
+            return this.x == object.x || 
+                this.x==object.y || 
+                this.y == object.x || 
+                this.y == object.y;      
+        }
+    }
+    
+    Map<Integer, List<Node>> map = new HashMap<>();
+    Set<List<Integer>> set = new HashSet<>();
+    public List<List<Integer>> fourSum(int[] nums, int target) {
+        int n = nums.length;
+        for(int i=0;i<n-1;i++){
+            for(int j=i+1;j<n;j++){
+                int sum = nums[i]+nums[j];
+                List<Node> list = map.getOrDefault(sum, new ArrayList<>());
+                list.add(new Node(i,j,sum));
+                map.put(sum, list);
+            }
+        }
+        List<List<Integer>> ans = new ArrayList<>();
+        for(Integer sum: map.keySet()){
+            List<Node> list1 = map.get(sum);
+            List<Node> list2 = map.getOrDefault(target-sum, new ArrayList<>());
+            
+            for(int i=0;i<list1.size();i++){
+                for(int j=0;j<list2.size();j++){
+                    Node node1 = list1.get(i);
+                    Node node2 = list2.get(j);
+                    if(!node1.equals(node2)){
+                        List<Integer> temp = new ArrayList<>();
+                        temp.add(nums[node1.x]);
+                        temp.add(nums[node1.y]);
+                        temp.add(nums[node2.x]);
+                        temp.add(nums[node2.y]);
+                        Collections.sort(temp);
+                        set.add(temp);
+                    }
+                }
+            }
+        }
+        ans.addAll(set);
+        return ans;
+    }
+}
