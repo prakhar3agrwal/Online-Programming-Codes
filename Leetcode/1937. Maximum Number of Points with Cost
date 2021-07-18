@@ -1,0 +1,41 @@
+https://leetcode.com/problems/maximum-number-of-points-with-cost
+
+class Solution {
+    public long maxPoints(int[][] points) {
+        int n = points.length;
+        int m = points[0].length;
+        
+        long[][] pt = new long[n][m];
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                pt[i][j] = (long)points[i][j];
+            }
+        }
+        long ans = 0;
+        
+        for(int i=1;i<n;i++){
+            long[] leftMax = new long[m];
+            leftMax[0] = pt[i-1][0];
+            
+            long[] rightMax = new long[m];
+            rightMax[m-1] = pt[i-1][m-1];
+            
+            for(int j=1;j<m;j++){
+                leftMax[j] = Math.max(leftMax[j-1]-1, pt[i-1][j]);
+            }
+            
+            for(int j=m-2;j>=0;j--){
+                rightMax[j] = Math.max(rightMax[j+1]-1, pt[i-1][j]);
+            }
+            
+            for(int j=0;j<m;j++){
+                pt[i][j] = Math.max(leftMax[j], rightMax[j]) + pt[i][j];
+            }
+        }
+        
+        return Arrays.stream(pt[n-1])
+                        .max()
+                        .getAsLong();
+        
+    }
+}
