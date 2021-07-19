@@ -1,0 +1,22 @@
+https://leetcode.com/problems/queries-on-a-permutation-with-key/
+
+class Solution {
+    public int[] processQueries(int[] queries, int m) {
+        List<Integer> list = new ArrayList<>();
+        for(int i=1;i<=m;i++){
+            list.add(i);
+        }
+        
+        int n = queries.length;
+        int[] ans = new int[n];
+        
+        for(int i=0;i<n;i++){
+            int val = queries[i];
+            int idx = list.indexOf(val);
+            ans[i] = idx;
+            list.remove(idx);
+            list.add(0,val);
+        }
+        return ans;
+    }
+}
