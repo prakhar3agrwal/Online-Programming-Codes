@@ -1,0 +1,17 @@
+https://leetcode.com/problems/minimum-operations-to-make-the-array-increasing
+
+class Solution {
+    public int minOperations(int[] nums) {
+        int n = nums.length;
+        int ans = 0;
+        int currCandidate = nums[0]+1;
+        for(int i=1;i<n;i++){
+            if(nums[i]<currCandidate){
+                ans += currCandidate-nums[i];
+                nums[i] = currCandidate;
+            }
+            currCandidate = nums[i]+1;
+        }
+        return ans;
+    }
+}
