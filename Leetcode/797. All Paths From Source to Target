@@ -1,0 +1,46 @@
+https://leetcode.com/problems/all-paths-from-source-to-target
+
+class Solution {
+    
+    Map<Integer, List<Integer>> map = new HashMap<>();
+    List<List<Integer>> ans = new ArrayList<>();
+    Set<Integer>visited = new HashSet<>();
+    
+    private void constructGraph(int[][] graph){
+        int n = graph.length;
+        for(int i=0;i<n;i++){
+            List<Integer> list = new ArrayList<>();
+            for(int j=0;j<graph[i].length;j++){
+                list.add(graph[i][j]);
+            }
+            map.put(i, list);
+        }
+    }
+    
+    
+    
+    private void dfs(int currNode, List<Integer> list){
+        if(currNode == map.size()-1){
+            list.add(currNode);
+            ans.add(new ArrayList<>(list));
+            list.remove(list.size()-1);
+            return;
+        }
+        list.add(currNode);
+        List<Integer> adjList = map.get(currNode);
+        for(int i=0;i<adjList.size();i++){
+            if(!visited.contains(adjList.get(i))){
+                visited.add(adjList.get(i));
+                dfs(adjList.get(i), list);
+                visited.remove(adjList.get(i));
+            }    
+        }
+        list.remove(list.size()-1);
+    }
+    
+    public List<List<Integer>> allPathsSourceTarget(int[][] graph) {
+        constructGraph(graph);
+        dfs(0, new ArrayList<>());
+        return ans;
+    }
+}
