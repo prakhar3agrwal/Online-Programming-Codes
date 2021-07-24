@@ -1,0 +1,46 @@
+https://leetcode.com/problems/describe-the-painting
+
+class Solution {
+    public List<List<Long>> splitPainting(int[][] segments) {
+        long[] freq = new long[100005];
+        boolean[] ends = new boolean[100005];
+        int n = segments.length;
+        for(int i=0;i<n;i++){
+            int left = segments[i][0];
+            int right = segments[i][1];
+            int color = segments[i][2];
+            
+            freq[left] += (long)color;
+            freq[right] -= (long)color;
+            ends[right] = true;
+        }
+        List<List<Long>> ans = new ArrayList<>();
+        
+        for(int i=1;i<100005;i++){
+            freq[i] += freq[i-1];    
+        }
+
+        for(int i=0;i<100005;i++){
+            while( i<100005 && freq[i]==0){
+                i++;
+            }    
+            int left = i;
+            
+            i++;
+            while(i<100005 && freq[i]==freq[i-1] && ends[i] == false){
+                i++;
+            }
+            int right = i-1;
+            if(i<100005 && freq[(int)right]!=0){
+                List<Long> temp = new ArrayList<>();
+                temp.add((long)left);
+                temp.add((long)right+1);
+                temp.add(freq[right]);
+                ans.add(temp);
+            }
+            i--;
+
+        }
+        return ans;
+    }
+}
