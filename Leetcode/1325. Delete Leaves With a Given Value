@@ -1,0 +1,53 @@
+https://leetcode.com/problems/delete-leaves-with-a-given-value
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    
+    private boolean isLeaf(TreeNode root){
+        if(root == null){
+            return false;
+        }
+        return (root.left == null && root.right == null);
+    }
+    
+    private void postOrder(TreeNode root, int target){
+        if(root == null){
+            return;
+        }    
+        postOrder(root.left, target);
+        postOrder(root.right, target);
+        
+        if(isLeaf(root.left)){
+            if(root.left.val == target){
+                root.left = null;
+            }
+        }
+        if(isLeaf(root.right)){
+            if(root.right.val == target){
+                root.right = null;
+            }
+        }
+    }
+    
+    public TreeNode removeLeafNodes(TreeNode root, int target) {
+        postOrder(root, target);
+        if(isLeaf(root) && root.val == target){
+            return null;
+        }
+        return root;
+    }
+}
