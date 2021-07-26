@@ -1,0 +1,18 @@
+https://leetcode.com/problems/non-negative-integers-without-consecutive-ones
+
+class Solution {
+    
+    private int countValidNos(int currNum, int limit){
+        if(currNum>limit){
+            return 0;
+        }
+        if((currNum&1) == 1){
+            return 1 + countValidNos(currNum<<1 | 0, limit);
+        }else{
+            return 1 + countValidNos(currNum<<1 | 0, limit) + countValidNos(currNum<<1 | 1, limit); 
+        }
+    }
+    public int findIntegers(int n) {
+        return 1 +  countValidNos(1,n);
+    }
+}
