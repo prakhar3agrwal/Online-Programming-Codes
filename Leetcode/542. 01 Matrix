@@ -1,0 +1,47 @@
+https://leetcode.com/problems/01-matrix/
+
+class Solution {
+    boolean isValid(int n, int m, int r, int c){
+        return (r>=0 && r<n && c>=0 && c<m);
+    }
+    public int[][] updateMatrix(int[][] mat) {
+        int n = mat.length;
+        if(n ==0){
+            return mat;
+        }
+        int m = mat[0].length;
+        int[][] ans = Arrays.stream(mat).map(int[]::clone).toArray(int[][]::new);
+        
+        Queue<Pair<Integer, Integer>> q = new LinkedList<>();
+        for(int i=0;i<n;i++){
+            for(int j = 0;j<m;j++){
+                if(mat[i][j] == 0){
+                    ans[i][j] = 0;
+                    q.add(new Pair(i,j));
+                }else{
+                    ans[i][j] = Integer.MAX_VALUE;
+                }
+            }
+        }
+        
+        
+        int[] rows = {1,0,-1,0};
+        int[] cols = {0,-1,0,1};
+        
+        while(!q.isEmpty()){
+            Pair<Integer, Integer> p = q.poll();
+            for(int i=0;i<4;i++){
+                int newRow = p.getKey() + rows[i];
+                int newCol = p.getValue() + cols[i];
+                if(!isValid(n,m,newRow, newCol)){
+                    continue;
+                }
+                if(ans[newRow][newCol]>ans[p.getKey()][p.getValue()]+1){
+                    ans[newRow][newCol] = ans[p.getKey()][p.getValue()]+1;
+                    q.add(new Pair(newRow, newCol));
+                }
+            }
+        }
+        return ans;
+    }
+}
