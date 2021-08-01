@@ -1,0 +1,50 @@
+https://leetcode.com/problems/optimize-water-distribution-in-a-village
+
+class Solution {
+    int[] parent = null;
+    
+    private int find(int house){
+        if(parent[house] != house){
+            parent[house] = find(parent[house]);
+        }
+        return parent[house];
+    }
+    
+    private void union(int house1, int house2){
+        int parent1 = find(house1);
+        int parent2 = find(house2);
+        parent[parent1]= parent2;
+    }
+    
+    public int minCostToSupplyWater(int n, int[] wells, int[][] pipes) {
+        List<int[]> edges = new ArrayList<>();
+        
+        parent = new int[n+1];
+        for(int i=0;i<=n;i++){
+            parent[i] = i;
+        }
+        
+        for(int i=0;i<wells.length;i++){
+            edges.add(new int[]{0,i+1, wells[i]});
+        }
+        
+        for(int i=0;i<pipes.length;i++){
+            edges.add(pipes[i]);
+        }
+        
+        Collections.sort(edges, (a,b)->a[2]-b[2]);
+        
+        int ans = 0;
+        for(int i=0;i<edges.size();i++){
+            int[] edge = edges.get(i);
+            int house1 = edge[0];
+            int house2 = edge[1];
+            int cost = edge[2];
+            if(find(house1) != find(house2)){
+                union(house1, house2);
+                ans+=cost;
+            }
+        }
+        return ans;
+    }
+}
