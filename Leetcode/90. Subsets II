@@ -1,0 +1,29 @@
+https://leetcode.com/problems/subsets-ii
+
+class Solution {
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        List<List<Integer>> ans = new ArrayList<>();
+        Set<List<Integer>> set = new HashSet();
+        
+        int n = nums.length;
+        int combinations = 1<<n;
+        int i = 0;
+        while(i<combinations){
+            int curr = i;
+            int j = 0;
+            List<Integer> temp = new ArrayList<>();
+            while(curr>0){
+                if((curr&1) == 1){
+                    temp.add(nums[j]);
+                }
+                j++;
+                curr/=2;
+            }
+            i++;
+            Collections.sort(temp);
+            set.add(temp);
+        }
+        ans.addAll(set);
+        return ans;
+    }
+}
