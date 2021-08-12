@@ -1,0 +1,17 @@
+https://leetcode.com/problems/longest-palindrome
+
+class Solution {
+    public int longestPalindrome(String s) {
+        int n = s.length();
+        int[] freq = new int[500];
+        for(int i=0;i<n;i++){
+            freq[s.charAt(i)]++;
+        }
+        int oddFreq = 0;
+        for(int i=0;i<500;i++){
+            oddFreq += ((freq[i]%2!=0)?1:0);
+        }
+        oddFreq -= ((oddFreq>0)?1:0);
+        return n - oddFreq;
+    }
+}
