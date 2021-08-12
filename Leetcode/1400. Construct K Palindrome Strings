@@ -1,0 +1,21 @@
+https://leetcode.com/problems/construct-k-palindrome-strings
+
+class Solution {
+    public boolean canConstruct(String s, int k) {
+        int n = s.length();
+        int[] freq = new int[26];
+        for(int i=0;i<n;i++){
+            freq[s.charAt(i)-'a']++;
+        }
+        if(k>n){
+            return false;
+        }
+        int oddFreq = 0;
+        for(int i=0;i<26;i++){
+            if(freq[i]%2!=0){
+                oddFreq++;
+            }
+        }
+        return oddFreq<=k;
+    }
+}
