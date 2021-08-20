@@ -1,0 +1,45 @@
+https://leetcode.com/problems/capacity-to-ship-packages-within-d-days
+
+class Solution {
+    
+    private boolean isPossible(int[] weights, int days, int capacity){
+        int n = weights.length;
+        int currDays = 1;
+        int currSum = 0;
+        for(int i = 0;i<n;i++){
+            currSum += weights[i];
+            if(currSum>capacity){
+                currDays++;
+                currSum = weights[i];
+            }
+        }
+        
+        return currDays<=days;
+    }
+    
+    public int shipWithinDays(int[] weights, int days) {
+        int ans = Integer.MAX_VALUE;
+        int n = weights.length;
+        
+        int sum = 0;
+        int maxElement = Integer.MIN_VALUE;
+        for(int weight: weights){
+            maxElement = Math.max(maxElement, weight);
+            sum += weight;
+        }
+        
+        int low = maxElement;
+        int high = sum;
+        while(low<=high){
+            int mid = (low+high)/2;
+            
+            if(isPossible(weights, days, mid)){
+                ans = Math.min(ans, mid);
+                high = mid-1;
+            }else{
+                low = mid+1;
+            }
+        }
+        return ans;
+    }
+}
