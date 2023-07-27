@@ -25,4 +25,9 @@ Ans:
 3. Perform the operation on shoe 1 and 2.
 4. Cost of shoe 1 becomes 1 OR 2 = 3 and shoes 3 becomes 1 AND 2 = 0
 5. Select shoes 3 and 1 and refund = 7^2 + 3^2 = 58
+
+Constraints:
+1<=N<=10^5
+1<=shoePrice[i]<=10^9
+
 */
