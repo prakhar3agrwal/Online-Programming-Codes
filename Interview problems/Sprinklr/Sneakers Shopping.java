@@ -30,4 +30,9 @@ Constraints:
 1<=N<=10^5
 1<=shoePrice[i]<=10^9
 
+Example 2:
+N = 5
+Prices: [3,6,7,5,3]
+Ans = 98
+
 */
