@@ -92,3 +92,30 @@ public class Solution {
 }
 
 //10^9 * 10^5 = 10^14
+
+
+//Alice and Capitalization
+
+public class Solution {
+    public String capitalizeFromChar(String A, String B) {
+        char[] ch = A.toCharArray();
+        char b = B.charAt(0);
+        int n = A.length();
+        int i=0;
+        while(i<n){
+            if(ch[i] == b){
+                break;
+            }
+            i++;
+        }
+        
+        while(i<n){
+            if(ch[i]>='a' && ch[i] <='z'){
+                ch[i] = (char)(ch[i] - 32);
+            } 
+            i++;
+        }
+        return new String(ch);
+    }
+}
+
