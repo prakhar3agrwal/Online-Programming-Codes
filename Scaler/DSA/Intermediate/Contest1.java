@@ -60,3 +60,35 @@ public class Solution {
         return ans;
     }
 }
+
+
+//Super engineers
+
+public class Solution {
+    public int solve(int[] A, int B, int C) {
+        int n = A.length;
+        long sum = 0;
+        int ans = 0;
+        for(int i=0;i<B;i++){
+            sum += A[i];
+        }
+        
+        long avg = sum/B;
+        if(avg<=C){
+            ans++;
+        }
+        int l = 1;
+        int r = B;
+        while(r<n){
+            sum += A[r] - A[l-1];
+            avg = sum/B;
+            if(avg<=C){
+                ans++;
+            }
+            l++;r++;
+        }
+        return ans>0?1:0;
+    }
+}
+
+//10^9 * 10^5 = 10^14
