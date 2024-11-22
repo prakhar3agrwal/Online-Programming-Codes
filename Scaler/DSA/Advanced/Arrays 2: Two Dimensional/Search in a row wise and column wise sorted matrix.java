@@ -76,7 +76,7 @@ public class Solution {
         int ans = Integer.MAX_VALUE;
         while(r<n && c>=0){
             if(A[r][c]==B){
-                ans =  Math.min(ans,((r+1)*1009)+(c+1));
+                ans =  Math.min(ans,((r+1)*1009)+(c+1)); //Tricky part where maximum solutions fail
                 c--;
             }
             else if(A[r][c]<B){
